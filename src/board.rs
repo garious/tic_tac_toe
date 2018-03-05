@@ -2,9 +2,10 @@
 pub enum CellState {
     Empty,
     Cross,
-    Nought
+    Nought,
 }
 
+#[derive(Debug, Clone)]
 pub struct Board {
     size: usize,
     cells: Vec<CellState>,
@@ -16,6 +17,14 @@ impl Board {
             size,
             cells: vec![CellState::Empty; (size * size)],
         }
+    }
+
+    pub fn get_cells(&self) -> &Vec<CellState> {
+        &self.cells
+    }
+
+    pub fn get_size(&self) -> usize {
+        self.size
     }
 
     pub fn update(&mut self, cell_move: usize, state: CellState) {
@@ -36,7 +45,21 @@ mod tests {
     }
 
     #[test]
-    fn it_sets_board_cell_to_token() {
+    fn it_gets_board_cells() {
+        let size = 3;
+        let board = Board::new(size);
+        assert_eq!(board.cells, *board.get_cells())
+    }
+
+    #[test]
+    fn it_gets_size_of_board() {
+        let size = 3;
+        let board = Board::new(size);
+        assert_eq!(board.size, board.get_size());
+    }
+
+    #[test]
+    fn it_sets_board_cell_state() {
         let size = 3;
         let mut board = Board::new(size);
         board.update(0, CellState::Cross);
