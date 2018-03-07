@@ -20,17 +20,15 @@ where
     }
 
     pub fn print(&mut self, message: &str) {
-        self.clear();
         write!(&mut self.writer, "{}\n", message).expect("Unable to write");
     }
 
     pub fn prompt(&mut self, prompt: &str) -> String {
-        self.clear();
         self.print(prompt);
         self.read_line()
     }
 
-    fn clear(&mut self) {
+    pub fn clear(&mut self) {
         write!(&mut self.writer, "{}", self.clear_sequence).expect("Unable to write");
     }
 
@@ -58,7 +56,7 @@ mod tests {
     }
 
     #[test]
-    fn it_prints_to_writer() {
+    fn it_prints_messages() {
         let input = b"1";
         let output = Vec::new();
         let mut io = IO::new(&input[..], output, "");
@@ -69,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn it_gets_prompt_response() {
+    fn it_prompts_for_and_gets_response() {
         let input = b"1";
         let output = Vec::new();
         let mut io = IO::new(&input[..], output, "");
@@ -78,5 +76,17 @@ mod tests {
 
         assert_eq!("Tic Tac Toe\n", output);
         assert_eq!("1", response);
+    }
+
+    #[test]
+    fn it_clears_io() {
+        let clear_sequence = "clear";
+        let input = b"1";
+        let output = Vec::new();
+        let mut io = IO::new(&input[..], output, &clear_sequence);
+        io.clear();
+        let output = String::from_utf8(io.writer).expect("Not UTF-8");
+
+        assert_eq!("clear", output);
     }
 }
