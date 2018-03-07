@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy, Ord, PartialOrd)]
 pub enum CellState {
     Empty,
     Cross,
@@ -52,7 +52,7 @@ impl Board {
         }
     }
 
-    fn empty_cells(&self) -> Vec<usize> {
+    pub fn empty_cells(&self) -> Vec<usize> {
         let mut empty_cells = Vec::new();
 
         for (i, _) in self.cells.iter().enumerate() {
@@ -169,6 +169,13 @@ mod tests {
         update_cells(vec![6], &mut board);
         assert_eq!(false, board.is_empty_cell(6));
         assert!(board.is_empty_cell(0));
+    }
+
+    #[test]
+    fn it_gets_indices_of_empty_cells() {
+        let mut board = Board::new(3);
+        update_cells(vec![0, 2, 5, 7], &mut board);
+        assert_eq!(vec![1, 3, 4, 6, 8], board.empty_cells());
     }
 
     #[test]
