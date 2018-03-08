@@ -1,7 +1,7 @@
 pub mod lazy;
 
-use board::*;
+use board::Board;
 
 pub trait Strategy {
-    fn decide(&self, token: CellState, board: &Board) -> usize;
+    fn decide(&self, board: &Board) -> usize;
 }

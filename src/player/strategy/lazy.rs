@@ -1,9 +1,10 @@
 extern crate rand;
 
 use rand::Rng;
-use board::*;
-use strategy::*;
+use board::Board;
+use strategy::Strategy;
 
+#[derive(Debug, PartialEq)]
 pub struct Lazy;
 
 impl Lazy {
@@ -13,7 +14,7 @@ impl Lazy {
 }
 
 impl Strategy for Lazy {
-    fn decide(&self, _: CellState, board: &Board) -> usize {
+    fn decide(&self, board: &Board) -> usize {
         let empty_cells = board.empty_cells();
         let random_number = rand::thread_rng().gen_range(0, empty_cells.len());
 
@@ -42,7 +43,7 @@ mod tests {
         let fill_spots = vec![0, 1, 3, 4];
         let empty_spots = vec![2, 5, 6, 7, 8];
         update_cells(fill_spots, &mut board);
-        let selection = strategy.decide(Cross, &board);
+        let selection = strategy.decide(&board);
 
         assert!(empty_spots.contains(&selection));
     }

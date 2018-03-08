@@ -1,4 +1,5 @@
-use board::*;
+use board::{Board, CellState};
+use board::CellState::*;
 
 pub fn view(board: &Board) -> String {
     let mut board_display = String::new();
@@ -15,9 +16,9 @@ pub fn view(board: &Board) -> String {
 
 fn match_cell_to_token(cell: &CellState) -> &str {
     match *cell {
-        CellState::Empty => " ",
-        CellState::Cross => "X",
-        CellState::Nought => "O",
+        Empty => " ",
+        Cross => "X",
+        Nought => "O",
     }
 }
 
@@ -58,8 +59,8 @@ mod tests {
             " O |   |   ",
         ].join("");
         let mut board = Board::new(3);
-        board.update(5, CellState::Cross);
-        board.update(6, CellState::Nought);
+        board.update(5, Cross);
+        board.update(6, Nought);
 
         assert_eq!(expected, view(&board));
     }
@@ -77,8 +78,8 @@ mod tests {
             "   |   |   |   ",
         ].join("");
         let mut board = Board::new(4);
-        board.update(5, CellState::Cross);
-        board.update(8, CellState::Nought);
+        board.update(5, Cross);
+        board.update(8, Nought);
 
         assert_eq!(expected, view(&board));
     }

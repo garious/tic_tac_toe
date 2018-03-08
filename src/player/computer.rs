@@ -1,8 +1,6 @@
-use std::io::{BufRead, Write};
-use board::*;
-use io::*;
-use player::*;
-use strategy::*;
+use board::{Board, CellState};
+use player::Player;
+use strategy::Strategy;
 
 #[derive(Debug, PartialEq)]
 pub struct Computer<S> {
@@ -21,16 +19,16 @@ impl<S: Strategy> Player for Computer<S> {
         &self.token
     }
 
-    fn get_move<R: BufRead, W: Write>(&self, board: &Board, _: &mut IO<R, W>) -> usize {
-        self.strategy.decide(self.token, board)
+    fn get_move(&mut self, board: &Board) -> Result<usize, String> {
+        Ok(self.strategy.decide(board))
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use board::CellState::*;
-    use strategy::lazy::*;
+    use board::CellState::{Cross, Nought};
+    use strategy::lazy::Lazy;
 
     fn update_cells(indices: Vec<usize>, board: &mut Board) {
         for i in indices.iter() {
@@ -55,13 +53,12 @@ mod tests {
 
     #[test]
     fn it_gets_player_move() {
-        let player = Computer::new(Cross, Lazy::new());
+        let mut player = Computer::new(Cross, Lazy::new());
         let mut board = Board::new(3);
         let fill_spots = vec![0, 1, 3, 4];
         let empty_spots = vec![2, 5, 6, 7, 8];
         update_cells(fill_spots, &mut board);
-        let mut io = IO::new(&b"1"[..], Vec::new(), "");
-        let selection = player.get_move(&board, &mut io);
+        let selection = player.get_move(&board).unwrap();
 
         assert!(empty_spots.contains(&selection));
     }
