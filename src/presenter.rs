@@ -1,25 +1,16 @@
-use board::{Board, CellState};
-use board::CellState::*;
+use board::Board;
 
 pub fn view(board: &Board) -> String {
     let mut board_display = String::new();
 
     for (i, cell) in board.get_cells().iter().enumerate() {
-        let token = match_cell_to_token(cell);
+        let token = cell.to_str();
         let delimiter = match_cell_delimiter(i, board);
         board_display.push_str(&pad_sides(token));
         board_display.push_str(&delimiter);
     }
 
     board_display
-}
-
-fn match_cell_to_token(cell: &CellState) -> &str {
-    match *cell {
-        Empty => " ",
-        Cross => "X",
-        Nought => "O",
-    }
 }
 
 fn match_cell_delimiter(index: usize, board: &Board) -> String {
@@ -47,6 +38,7 @@ fn pad_sides(token: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use token::Token::{Cross, Nought};
 
     #[test]
     fn it_formats_size_3_board_to_string_view() {

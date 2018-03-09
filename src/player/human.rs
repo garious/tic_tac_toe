@@ -1,25 +1,26 @@
 use std::io::BufRead;
-use board::{Board, CellState};
+use board::Board;
 use player::Player;
 use script::Script::InvalidSelection;
+use token::Token;
 use user_input::UserInput;
 
 const TO_INDEX: usize = 1;
 
 #[derive(Debug, PartialEq)]
 pub struct Human<R> {
-    token: CellState,
+    token: Token,
     input: UserInput<R>,
 }
 
 impl<R: BufRead> Human<R> {
-    pub fn new(token: CellState, input: UserInput<R>) -> Human<R> {
+    pub fn new(token: Token, input: UserInput<R>) -> Human<R> {
         Human { token, input }
     }
 }
 
 impl<R: BufRead> Player for Human<R> {
-    fn get_token(&self) -> &CellState {
+    fn get_token(&self) -> &Token {
         &self.token
     }
 
@@ -37,7 +38,7 @@ impl<R: BufRead> Player for Human<R> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use board::CellState::Cross;
+    use token::Token::Cross;
 
     #[test]
     fn it_creates_new_player() {

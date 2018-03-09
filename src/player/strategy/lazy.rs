@@ -25,7 +25,7 @@ impl Strategy for Lazy {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use board::CellState::*;
+    use token::Token::{Cross, Nought};
 
     fn update_cells(indices: Vec<usize>, board: &mut Board) {
         for i in indices.iter() {

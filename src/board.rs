@@ -1,29 +1,25 @@
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum CellState {
-    Empty,
-    Cross,
-    Nought,
-}
+use token::Token;
+use token::Token::*;
 
 const MODIFIER: usize = 1;
 
-type CellMatrix = Vec<Vec<CellState>>;
+type CellMatrix = Vec<Vec<Token>>;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Board {
     size: usize,
-    cells: Vec<CellState>,
+    cells: Vec<Token>,
 }
 
 impl Board {
     pub fn new(size: usize) -> Board {
         Board {
             size,
-            cells: vec![CellState::Empty; (size * size)],
+            cells: vec![Empty; (size * size)],
         }
     }
 
-    pub fn get_cells(&self) -> &Vec<CellState> {
+    pub fn get_cells(&self) -> &Vec<Token> {
         &self.cells
     }
 
@@ -31,8 +27,8 @@ impl Board {
         self.size
     }
 
-    pub fn update(&mut self, cell_move: usize, state: CellState) {
-        self.cells[cell_move] = state;
+    pub fn update(&mut self, cell_move: usize, token: Token) {
+        self.cells[cell_move] = token;
     }
 
     pub fn partition(&self) -> CellMatrix {
@@ -45,7 +41,7 @@ impl Board {
 
     pub fn is_empty_cell(&self, index: usize) -> bool {
         match self.cells[index] {
-            CellState::Empty => true,
+            Empty => true,
             _ => false,
         }
     }
@@ -87,11 +83,11 @@ impl Board {
         vec![left_diagonal, right_diagonal]
     }
 
-    fn left_diagonal(&self, rows: &CellMatrix) -> Vec<CellState> {
+    fn left_diagonal(&self, rows: &CellMatrix) -> Vec<Token> {
         rows.iter().enumerate().map(|(i, x)| x[i]).collect()
     }
 
-    fn right_diagonal(&self, rows: &CellMatrix) -> Vec<CellState> {
+    fn right_diagonal(&self, rows: &CellMatrix) -> Vec<Token> {
         let row_end = self.size - MODIFIER;
 
         rows.iter()
@@ -104,7 +100,6 @@ impl Board {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::CellState::*;
 
     fn update_cells(indices: Vec<usize>, board: &mut Board) {
         for i in indices.iter() {
