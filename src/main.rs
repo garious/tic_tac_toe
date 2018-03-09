@@ -6,11 +6,11 @@ mod player;
 mod presenter;
 mod rules;
 mod script;
+mod token;
 mod user_input;
 mod view;
 
 use board::Board;
-use board::CellState::{Cross, Nought};
 use game::Game;
 use game::GameState::InProgress;
 use player::*;
@@ -18,6 +18,7 @@ use player::computer::Computer;
 use player::human::Human;
 use player::strategy::lazy::Lazy;
 use script::Script::{HowToPlay, Welcome};
+use token::Token::{Cross, Nought};
 use user_input::UserInput;
 use view::View;
 

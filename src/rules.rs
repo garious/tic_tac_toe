@@ -1,5 +1,6 @@
-use board::{Board, CellState};
-use board::CellState::*;
+use board::Board;
+use token::Token;
+use token::Token::{Cross, Nought};
 
 pub fn is_game_over(board: &Board) -> bool {
     is_won(board) || is_draw(board)
@@ -13,20 +14,21 @@ fn is_draw(board: &Board) -> bool {
     !is_won(board) && board.empty_cells().is_empty()
 }
 
-fn win_for(token: &CellState, board: &Board) -> bool {
+fn win_for(token: &Token, board: &Board) -> bool {
     board
         .partition()
         .iter()
         .any(|line| each_token_matches(line, token))
 }
 
-fn each_token_matches(line: &Vec<CellState>, token: &CellState) -> bool {
+fn each_token_matches(line: &Vec<Token>, token: &Token) -> bool {
     line.iter().all(|cell| cell == token)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use token::Token::Empty;
 
     fn update_cells(indices: Vec<usize>, board: &mut Board) {
         for i in indices.iter() {

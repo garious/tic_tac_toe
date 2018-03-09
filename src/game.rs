@@ -1,9 +1,10 @@
 use std::io::Write;
-use board::{Board, CellState};
+use board::Board;
 use player::Player;
 use presenter;
 use rules;
 use script::Script::PickSpot;
+use token::Token;
 use view::View;
 
 #[derive(Debug, PartialEq)]
@@ -52,7 +53,7 @@ impl<P: Player, Q: Player> Game<P, Q> {
         };
     }
 
-    fn player_options(&mut self) -> (Result<usize, String>, CellState) {
+    fn player_options(&mut self) -> (Result<usize, String>, Token) {
         let number_empty_cells = self.board.empty_cells().len();
         let is_odd = number_empty_cells % 2 != 0;
 
@@ -80,10 +81,10 @@ mod tests {
     use super::*;
     use super::GameState::{InProgress, Over};
     use board::Board;
-    use board::CellState::{Cross, Nought};
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;
+    use token::Token::{Cross, Nought};
     use user_input::UserInput;
 
     #[test]

@@ -1,21 +1,22 @@
-use board::{Board, CellState};
+use board::Board;
 use player::Player;
 use strategy::Strategy;
+use token::Token;
 
 #[derive(Debug, PartialEq)]
 pub struct Computer<S> {
-    token: CellState,
+    token: Token,
     strategy: S,
 }
 
 impl<S: Strategy> Computer<S> {
-    pub fn new(token: CellState, strategy: S) -> Computer<S> {
+    pub fn new(token: Token, strategy: S) -> Computer<S> {
         Computer { token, strategy }
     }
 }
 
 impl<S: Strategy> Player for Computer<S> {
-    fn get_token(&self) -> &CellState {
+    fn get_token(&self) -> &Token {
         &self.token
     }
 
@@ -27,7 +28,7 @@ impl<S: Strategy> Player for Computer<S> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use board::CellState::{Cross, Nought};
+    use token::Token::{Cross, Nought};
     use strategy::lazy::Lazy;
 
     fn update_cells(indices: Vec<usize>, board: &mut Board) {
