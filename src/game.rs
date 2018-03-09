@@ -36,9 +36,11 @@ impl<P: Player, Q: Player> Game<P, Q> {
     }
 
     pub fn play<W: Write>(&mut self, view: &mut View<W>) {
+        let board_length = self.board.get_size().pow(2);
+
         view.clear();
         view.print(&presenter::view(&self.board));
-        view.print(&format!("{}{}", PickSpot.to_str(), self.board.get_size()));
+        view.print(&format!("{}{}", PickSpot.to_str(), board_length));
 
         self.take_turn();
         self.update_state();

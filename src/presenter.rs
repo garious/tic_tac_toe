@@ -1,5 +1,10 @@
 use board::Board;
 
+const BLANK: &str = "";
+const PLUS: &str = "+";
+const SEGMENT: &str = "---";
+const VBAR: &str = "|";
+
 pub fn view(board: &Board) -> String {
     let mut board_display = String::new();
 
@@ -20,15 +25,15 @@ fn match_cell_delimiter(index: usize, board: &Board) -> String {
     let row_end = size - 1;
 
     match index {
-        index if index == last_cell_index => String::from(""),
+        index if index == last_cell_index => String::from(BLANK),
         index if index % size == row_end => divider,
-        _ => String::from("|"),
+        _ => String::from(VBAR),
     }
 }
 
 fn generate_divider(board: &Board) -> String {
-    let divider = vec!["---"; board.get_size()];
-    format!("\n{}\n", divider.join("+"))
+    let divider = vec![SEGMENT; board.get_size()];
+    format!("\n{}\n", divider.join(PLUS))
 }
 
 fn pad_sides(token: &str) -> String {
