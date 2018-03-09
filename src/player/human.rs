@@ -1,64 +1,63 @@
-use std::io::{BufRead, Write};
-use board::*;
-use io::*;
-use player::*;
+use std::io::BufRead;
+use board::{Board, CellState};
+use player::Player;
+use user_input::UserInput;
+
+const TO_INDEX: usize = 1;
 
 #[derive(Debug, PartialEq)]
-pub struct Human {
+pub struct Human<R> {
     token: CellState,
+    input: UserInput<R>,
 }
 
-impl Human {
-    pub fn new(token: CellState) -> Human {
-        Human { token }
+impl<R: BufRead> Human<R> {
+    pub fn new(token: CellState, input: UserInput<R>) -> Human<R> {
+        Human { token, input }
     }
 }
 
-impl Player for Human {
+impl<R: BufRead> Player for Human<R> {
     fn get_token(&self) -> &CellState {
         &self.token
     }
 
-    fn get_move<R: BufRead, W: Write>(&self, board: &Board, io: &mut IO<R, W>) -> usize {
-        let range = board.get_size().pow(2);
-        let prompt = format!("Pick a spot between 1-{}", range);
-        let selection = io.prompt(&prompt);
-
-        let selection: usize = match selection.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {
-                io.print("Invavlid selection.");
-                self.get_move(board, io)
-            }
+    fn get_move(&mut self, _: &Board) -> Result<usize, String> {
+        let selection = self.input.read_line();
+        let result: Result<usize, String> = match selection.trim().parse::<usize>() {
+            Ok(num) => Ok(num - TO_INDEX),
+            Err(_) => Err(String::from("Invalid selection.")),
         };
 
-        selection - 1
+        result
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use board::CellState::*;
+    use board::CellState::Cross;
 
     #[test]
     fn it_creates_new_player() {
-        let player = Human::new(Cross);
+        let user_input = UserInput::new(&b"1"[..]);
+        let player = Human::new(Cross, user_input);
         assert_eq!(Cross, player.token);
     }
 
     #[test]
     fn it_gets_player_token() {
-        let player = Human::new(Cross);
+        let user_input = UserInput::new(&b"1"[..]);
+        let player = Human::new(Cross, user_input);
         assert_eq!(&Cross, player.get_token());
     }
 
     #[test]
     fn it_gets_player_move() {
-        let player = Human::new(Cross);
+        let user_input = UserInput::new(&b"1"[..]);
+        let mut player = Human::new(Cross, user_input);
         let board = Board::new(3);
-        let mut io = IO::new(&b"1"[..], Vec::new(), "");
-        let selection = player.get_move(&board, &mut io);
+        let selection = player.get_move(&board).unwrap();
 
         assert_eq!(0, selection);
     }

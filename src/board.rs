@@ -1,13 +1,15 @@
-#[derive(Debug, Eq, PartialEq, Clone, Copy, Ord, PartialOrd)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum CellState {
     Empty,
     Cross,
     Nought,
 }
 
+const MODIFIER: usize = 1;
+
 type CellMatrix = Vec<Vec<CellState>>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Board {
     size: usize,
     cells: Vec<CellState>,
@@ -31,10 +33,6 @@ impl Board {
 
     pub fn update(&mut self, cell_move: usize, state: CellState) {
         self.cells[cell_move] = state;
-    }
-
-    pub fn is_full(&self) -> bool {
-        self.empty_cells().len() == 0
     }
 
     pub fn partition(&self) -> CellMatrix {
@@ -72,7 +70,7 @@ impl Board {
         let mut columns = rows.to_vec();
 
         for i in 0..self.size {
-            for j in i + 1..self.size {
+            for j in i + MODIFIER..self.size {
                 let temp = columns[i][j];
                 columns[i][j] = columns[j][i];
                 columns[j][i] = temp;
@@ -94,7 +92,7 @@ impl Board {
     }
 
     fn right_diagonal(&self, rows: &CellMatrix) -> Vec<CellState> {
-        let row_end = self.size - 1;
+        let row_end = self.size - MODIFIER;
 
         rows.iter()
             .enumerate()
@@ -114,13 +112,6 @@ mod tests {
                 i if i % 2 == 0 => board.update(*i, Cross),
                 _ => board.update(*i, Nought),
             }
-        }
-    }
-
-    fn fill_board(board: &mut Board) {
-        let length = board.size.pow(2);
-        for i in 0..length {
-            board.update(i, Cross);
         }
     }
 
@@ -153,14 +144,6 @@ mod tests {
         update_cells(vec![0, 5], &mut board);
         assert_eq!(Cross, board.cells[0]);
         assert_eq!(Nought, board.cells[5]);
-    }
-
-    #[test]
-    fn it_informs_if_board_is_full() {
-        let mut board = Board::new(3);
-        assert_eq!(false, board.is_full());
-        fill_board(&mut board);
-        assert!(board.is_full());
     }
 
     #[test]
