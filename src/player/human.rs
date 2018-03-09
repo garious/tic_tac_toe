@@ -1,6 +1,7 @@
 use std::io::BufRead;
 use board::{Board, CellState};
 use player::Player;
+use script::Script::InvalidSelection;
 use user_input::UserInput;
 
 const TO_INDEX: usize = 1;
@@ -26,7 +27,7 @@ impl<R: BufRead> Player for Human<R> {
         let selection = self.input.read_line();
         let result: Result<usize, String> = match selection.trim().parse::<usize>() {
             Ok(num) => Ok(num - TO_INDEX),
-            Err(_) => Err(String::from("Invalid selection.")),
+            Err(_) => Err(String::from(InvalidSelection.to_str())),
         };
 
         result
