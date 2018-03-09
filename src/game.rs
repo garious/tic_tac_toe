@@ -3,6 +3,7 @@ use board::{Board, CellState};
 use player::Player;
 use presenter;
 use rules;
+use script::Script::PickSpot;
 use view::View;
 
 #[derive(Debug, PartialEq)]
@@ -36,11 +37,7 @@ impl<P: Player, Q: Player> Game<P, Q> {
     pub fn play<W: Write>(&mut self, view: &mut View<W>) {
         view.clear();
         view.print(&presenter::view(&self.board));
-        view.print(&format!(
-            "{}{}",
-            "Pick a number from 1-",
-            self.board.get_size()
-        ));
+        view.print(&format!("{}{}", PickSpot.to_str(), self.board.get_size()));
 
         self.take_turn();
         self.update_state();
