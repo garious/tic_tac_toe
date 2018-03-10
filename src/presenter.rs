@@ -19,7 +19,7 @@ pub fn view(board: &Board) -> String {
 }
 
 fn match_cell_delimiter(index: usize, board: &Board) -> String {
-    let size = board.get_size();
+    let size = board.get_row_size();
     let divider = generate_divider(board);
     let last_cell_index = (size * size) - 1;
     let row_end = size - 1;
@@ -32,7 +32,7 @@ fn match_cell_delimiter(index: usize, board: &Board) -> String {
 }
 
 fn generate_divider(board: &Board) -> String {
-    let divider = vec![SEGMENT; board.get_size()];
+    let divider = vec![SEGMENT; board.get_row_size()];
     format!("\n{}\n", divider.join(PLUS))
 }
 
