@@ -36,7 +36,7 @@ impl<P: Player, Q: Player> Game<P, Q> {
     }
 
     pub fn play<W: Write>(&mut self, view: &mut View<W>) {
-        let board_length = self.board.get_size().pow(2);
+        let board_length = self.board.get_length();
 
         view.clear();
         view.print(&presenter::view(&self.board));

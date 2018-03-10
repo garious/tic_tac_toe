@@ -23,8 +23,12 @@ impl Board {
         &self.cells
     }
 
-    pub fn get_size(&self) -> usize {
+    pub fn get_row_size(&self) -> usize {
         self.size
+    }
+
+    pub fn get_length(&self) -> usize {
+        self.size * self.size
     }
 
     pub fn update(&mut self, cell_move: usize, token: Token) {
@@ -129,7 +133,14 @@ mod tests {
     fn it_gets_size_of_board() {
         let size = 3;
         let board = Board::new(size);
-        assert_eq!(board.size, board.get_size());
+        assert_eq!(board.size, board.get_row_size());
+    }
+
+    #[test]
+    fn it_gets_length_of_board() {
+        let size = 3;
+        let board = Board::new(size);
+        assert_eq!(size * size, board.get_length());
     }
 
     #[test]

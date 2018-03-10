@@ -40,7 +40,7 @@ mod tests {
     }
 
     fn draw(board: &mut Board) {
-        let length = board.get_size().pow(2);
+        let length = board.get_length();
         let cross_spaces = [0, 2, 3, 7, 8];
         for i in 0..length {
             match cross_spaces.contains(&i) {
