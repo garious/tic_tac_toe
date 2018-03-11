@@ -43,7 +43,7 @@ fn pad_sides(token: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use token::Token::{Cross, Nought};
+    use board::tests::*;
 
     #[test]
     fn it_formats_size_3_board_to_string_view() {
@@ -51,13 +51,11 @@ mod tests {
         let expected = vec![
             "   |   |   ",
             divider,
-            "   |   | X ",
+            "   |   | O ",
             divider,
-            " O |   |   \n",
+            " X |   |   \n",
         ].join("");
-        let mut board = Board::new(3);
-        board.update(5, Cross);
-        board.update(6, Nought);
+        let board = create_board_filling_cells(3, vec![5, 6]);
 
         assert_eq!(expected, view(&board));
     }
@@ -68,15 +66,13 @@ mod tests {
         let expected = vec![
             "   |   |   |   ",
             divider,
-            "   | X |   |   ",
+            "   | O |   |   ",
             divider,
-            " O |   |   |   ",
+            " X |   |   |   ",
             divider,
             "   |   |   |   \n",
         ].join("");
-        let mut board = Board::new(4);
-        board.update(5, Cross);
-        board.update(8, Nought);
+        let board = create_board_filling_cells(4, vec![5, 8]);
 
         assert_eq!(expected, view(&board));
     }

@@ -31,10 +31,17 @@ impl Board {
         self.size * self.size
     }
 
-    pub fn update(&mut self, cell_move: usize, token: Token) {
-        // if self.is_empty_cell(cell_move) {
-        self.cells[cell_move] = token;
-        // }
+    pub fn update(self, cell_move: usize, token: Token) -> Board {
+        if self.is_empty_cell(cell_move) {
+            let mut cells = self.cells;
+            cells[cell_move] = token;
+            return Board {
+                size: self.size,
+                cells,
+            };
+        };
+
+        self
     }
 
     pub fn partition(&self) -> CellMatrix {
@@ -107,23 +114,24 @@ impl Board {
 pub mod tests {
     use super::*;
 
-    pub fn update_cells(indices: Vec<usize>, board: &mut Board) {
+    pub fn create_board_filling_cells(size: usize, indices: Vec<usize>) -> Board {
+        let mut cells = vec![Empty; size * size];
         for i in indices.iter() {
             match i {
-                i if i % 2 == 0 => board.update(*i, Cross),
-                _ => board.update(*i, Nought),
+                i if i % 2 == 0 => cells[*i] = Cross,
+                _ => cells[*i] = Nought,
             }
         }
+
+        Board { size, cells }
     }
 
-    pub fn draw(board: &mut Board) {
-        let length = board.get_length();
-        let cross_spaces = [0, 2, 3, 7, 8];
-        for i in 0..length {
-            match cross_spaces.contains(&i) {
-                true => board.update(i, Cross),
-                false => board.update(i, Nought),
-            }
+    pub fn create_tied_board(size: usize) -> Board {
+        Board {
+            size,
+            cells: vec![
+                Cross, Nought, Cross, Cross, Nought, Nought, Nought, Cross, Cross
+            ],
         }
     }
 
@@ -162,32 +170,27 @@ pub mod tests {
 
     #[test]
     fn it_sets_board_cell_state() {
-        let size = 3;
-        let mut board = Board::new(size);
-        update_cells(vec![0, 5], &mut board);
+        let board = create_board_filling_cells(3, vec![0, 5]);
         assert_eq!(Cross, board.cells[0]);
         assert_eq!(Nought, board.cells[5]);
     }
 
     #[test]
     fn it_informs_if_cell_is_empty() {
-        let mut board = Board::new(3);
-        update_cells(vec![6], &mut board);
+        let board = create_board_filling_cells(3, vec![6]);
         assert_eq!(false, board.is_empty_cell(6));
         assert!(board.is_empty_cell(0));
     }
 
     #[test]
     fn it_gets_indices_of_empty_cells() {
-        let mut board = Board::new(3);
-        update_cells(vec![0, 2, 5, 7], &mut board);
+        let board = create_board_filling_cells(3, vec![0, 2, 5, 7]);
         assert_eq!(vec![1, 3, 4, 6, 8], board.empty_cells());
     }
 
     #[test]
     fn it_partitions_board_into_rows_diagonals_columns() {
-        let mut board = Board::new(3);
-        update_cells(vec![0, 2, 3, 4, 7, 8], &mut board);
+        let board = create_board_filling_cells(3, vec![0, 2, 3, 4, 7, 8]);
         let rows = vec![
             vec![Cross, Empty, Cross],
             vec![Nought, Cross, Empty],

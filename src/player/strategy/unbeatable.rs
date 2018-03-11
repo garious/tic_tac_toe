@@ -37,13 +37,11 @@ impl Unbeatable {
     fn get_best_option(
         &self,
         depth: i32,
-        alpha: i32,
-        beta: i32,
-        board: &mut Board,
+        mut alpha: i32,
+        mut beta: i32,
+        board: &Board,
         is_max: bool,
     ) -> (i32, usize) {
-        let mut alpha = alpha;
-        let mut beta = beta;
         let mut best_score;
         let mut best_move = 10;
 
@@ -52,10 +50,10 @@ impl Unbeatable {
             return (best_score, best_move);
         };
 
-        for i in board.empty_cells().iter() {
+        for i in &board.empty_cells() {
             let token = self.current_token(is_max);
-            board.update(*i, token);
-            best_score = self.get_best_option(depth - 1, alpha, beta, board, !is_max)
+            let mock_board = board.clone().update(*i, token);
+            best_score = self.get_best_option(depth - 1, alpha, beta, &mock_board, !is_max)
                 .0;
 
             if is_max {
@@ -71,8 +69,6 @@ impl Unbeatable {
                     best_move = *i;
                 }
             }
-
-            board.update(*i, Empty);
 
             if alpha >= beta {
                 break;
@@ -91,8 +87,7 @@ impl Unbeatable {
 impl Strategy for Unbeatable {
     fn decide(&self, board: &Board) -> usize {
         let depth = board.empty_cells().len() as i32;
-        let mut board = board.clone();
-        self.get_best_option(depth, MIN, MAX, &mut board, true).1
+        self.get_best_option(depth, MIN, MAX, &board, true).1
     }
 }
 
@@ -124,9 +119,8 @@ mod tests {
 
     #[test]
     fn it_returns_zero_as_score_for_draw() {
-        let mut board = Board::new(3);
+        let board = create_tied_board(3);
         let unbeatable = Unbeatable::new(Cross);
-        draw(&mut board);
         assert_eq!(0, unbeatable.score(0, &board));
     }
 
@@ -152,9 +146,8 @@ mod tests {
 
     #[test]
     fn it_returns_base_score_move_when_draw() {
-        let mut board = Board::new(3);
+        let mut board = create_tied_board(3);
         let unbeatable = Unbeatable::new(Cross);
-        draw(&mut board);
         assert_eq!(
             (0, 10),
             unbeatable.get_best_option(0, MIN, MAX, &mut board, true)

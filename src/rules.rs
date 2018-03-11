@@ -43,43 +43,39 @@ mod tests {
 
     #[test]
     fn it_informs_if_game_not_over() {
-        let mut board = Board::new(3);
-        assert_eq!(false, is_game_over(&mut board));
+        let board = Board::new(3);
+        assert_eq!(false, is_game_over(&board));
     }
 
     #[test]
     fn it_informs_if_game_over_for_win() {
-        let mut board = Board::new(3);
-        update_cells((0..9).collect(), &mut board);
-        assert!(is_game_over(&mut board));
+        let board = create_board_filling_cells(3, (0..9).collect());
+        assert!(is_game_over(&board));
     }
 
     #[test]
     fn it_informs_if_game_is_over_for_draw() {
-        let mut board = Board::new(3);
-        draw(&mut board);
-        assert!(is_draw(&mut board));
+        let board = create_tied_board(3);
+        assert!(is_draw(&board));
     }
 
     #[test]
     fn it_informs_if_game_is_won() {
         let mut board = Board::new(3);
-        assert_eq!(false, is_won(&mut board));
-        update_cells((0..9).collect(), &mut board);
-        assert!(is_won(&mut board));
+        assert_eq!(false, is_won(&board));
+        board = create_board_filling_cells(3, (0..9).collect());
+        assert!(is_won(&board));
     }
 
     #[test]
     fn it_specifies_winner() {
-        let mut board = Board::new(3);
-        update_cells((0..9).collect(), &mut board);
+        let board = create_board_filling_cells(3, (0..9).collect());
         assert_eq!(&Cross, get_winner(&board));
     }
 
     #[test]
     fn it_specifies_empty_as_draw_winner() {
-        let mut board = Board::new(3);
-        draw(&mut board);
+        let board = create_tied_board(3);
         assert_eq!(&Empty, get_winner(&board));
     }
 
@@ -94,15 +90,14 @@ mod tests {
     #[test]
     fn it_informs_if_game_is_not_draw() {
         let mut board = Board::new(3);
-        assert_eq!(false, is_draw(&mut board));
-        update_cells((0..9).collect(), &mut board);
-        assert_eq!(false, is_draw(&mut board));
+        assert_eq!(false, is_draw(&board));
+        board = create_board_filling_cells(3, (0..9).collect());
+        assert_eq!(false, is_draw(&board));
     }
 
     #[test]
     fn it_informs_if_game_is_draw() {
-        let mut board = Board::new(3);
-        draw(&mut board);
-        assert!(is_draw(&mut board));
+        let board = create_tied_board(3);
+        assert!(is_draw(&board));
     }
 }
