@@ -43,4 +43,6 @@ fn main() {
     while game.get_state() == &InProgress {
         game.play(&mut view);
     }
+
+    game.reveal_winner(&mut view);
 }

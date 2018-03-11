@@ -1,6 +1,6 @@
 use board::Board;
 
-const BLANK: &str = "";
+const NEW_LINE: &str = "\n";
 const PLUS: &str = "+";
 const SEGMENT: &str = "---";
 const VBAR: &str = "|";
@@ -25,7 +25,7 @@ fn match_cell_delimiter(index: usize, board: &Board) -> String {
     let row_end = size - 1;
 
     match index {
-        index if index == last_cell_index => String::from(BLANK),
+        index if index == last_cell_index => String::from(NEW_LINE),
         index if index % size == row_end => divider,
         _ => String::from(VBAR),
     }
@@ -53,7 +53,7 @@ mod tests {
             divider,
             "   |   | X ",
             divider,
-            " O |   |   ",
+            " O |   |   \n",
         ].join("");
         let mut board = Board::new(3);
         board.update(5, Cross);
@@ -72,7 +72,7 @@ mod tests {
             divider,
             " O |   |   |   ",
             divider,
-            "   |   |   |   ",
+            "   |   |   |   \n",
         ].join("");
         let mut board = Board::new(4);
         board.update(5, Cross);

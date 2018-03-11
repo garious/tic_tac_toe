@@ -3,6 +3,8 @@ pub enum Script {
     HowToPlay,
     PickSpot,
     InvalidSelection,
+    Draw,
+    Wins,
 }
 
 impl Script {
@@ -23,6 +25,8 @@ impl Script {
             }
             Script::PickSpot => "Pick an open spot between 1-",
             Script::InvalidSelection => "Invalid selection.",
+            Script::Draw => "It's a draw.",
+            Script::Wins => " wins!!!",
         }
     }
 }

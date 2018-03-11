@@ -1,9 +1,19 @@
 use board::Board;
 use token::Token;
-use token::Token::{Cross, Nought};
+use token::Token::*;
 
 pub fn is_game_over(board: &Board) -> bool {
     is_won(board) || is_draw(board)
+}
+
+pub fn get_winner(board: &Board) -> &Token {
+    if win_for(&Cross, board) {
+        return &Cross;
+    } else if win_for(&Nought, board) {
+        return &Nought;
+    } else {
+        return &Empty;
+    }
 }
 
 fn is_won(board: &Board) -> bool {
@@ -57,6 +67,20 @@ mod tests {
         assert_eq!(false, is_won(&mut board));
         update_cells((0..9).collect(), &mut board);
         assert!(is_won(&mut board));
+    }
+
+    #[test]
+    fn it_specifies_winner() {
+        let mut board = Board::new(3);
+        update_cells((0..9).collect(), &mut board);
+        assert_eq!(&Cross, get_winner(&board));
+    }
+
+    #[test]
+    fn it_specifies_empty_as_draw_winner() {
+        let mut board = Board::new(3);
+        draw(&mut board);
+        assert_eq!(&Empty, get_winner(&board));
     }
 
     #[test]
