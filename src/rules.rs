@@ -51,11 +51,21 @@ mod tests {
     }
 
     #[test]
-    fn it_informs_if_game_is_over() {
+    fn it_informs_if_game_not_over() {
         let mut board = Board::new(3);
         assert_eq!(false, is_game_over(&mut board));
+    }
+
+    #[test]
+    fn it_informs_if_game_over_for_win() {
+        let mut board = Board::new(3);
         update_cells((0..9).collect(), &mut board);
         assert!(is_game_over(&mut board));
+    }
+
+    #[test]
+    fn it_informs_if_game_is_over_for_draw() {
+        let mut board = Board::new(3);
         draw(&mut board);
         assert!(is_draw(&mut board));
     }
@@ -77,11 +87,16 @@ mod tests {
     }
 
     #[test]
-    fn it_informs_if_game_is_a_draw() {
+    fn it_informs_if_game_is_not_draw() {
         let mut board = Board::new(3);
         assert_eq!(false, is_draw(&mut board));
         update_cells((0..9).collect(), &mut board);
         assert_eq!(false, is_draw(&mut board));
+    }
+
+    #[test]
+    fn it_informs_if_game_is_draw() {
+        let mut board = Board::new(3);
         draw(&mut board);
         assert!(is_draw(&mut board));
     }
