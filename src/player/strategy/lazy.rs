@@ -25,16 +25,7 @@ impl Strategy for Lazy {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use token::Token::{Cross, Nought};
-
-    fn update_cells(indices: Vec<usize>, board: &mut Board) {
-        for i in indices.iter() {
-            match i {
-                i if i % 2 == 0 => board.update(*i, Cross),
-                _ => board.update(*i, Nought),
-            }
-        }
-    }
+    use board::tests::*;
 
     #[test]
     fn it_picks_random_empty_cell() {

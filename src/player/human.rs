@@ -59,8 +59,19 @@ mod tests {
         let user_input = UserInput::new(&b"1"[..]);
         let mut player = Human::new(Cross, user_input);
         let board = Board::new(3);
-        let selection = player.get_move(&board).unwrap();
+        let selection = player.get_move(&board);
 
-        assert_eq!(0, selection);
+        assert_eq!(Ok(0), selection);
+    }
+
+    #[test]
+    fn it_returns_error_for_invalid_input() {
+        let user_input = UserInput::new(&b"y"[..]);
+        let mut player = Human::new(Cross, user_input);
+        let board = Board::new(3);
+        let selection = player.get_move(&board);
+        let expected = Err(String::from(InvalidSelection.to_str()));
+
+        assert_eq!(expected, selection);
     }
 }
