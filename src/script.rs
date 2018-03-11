@@ -21,7 +21,7 @@ impl Script {
                  \nthey win. So watch out!\
                  \n\nPress [enter] to play."
             }
-            Script::PickSpot => "Pick a spot between 1-",
+            Script::PickSpot => "Pick an open spot between 1-",
             Script::InvalidSelection => "Invalid selection.",
         }
     }
@@ -33,7 +33,7 @@ mod tests {
 
     #[test]
     fn it_returns_correct_messages() {
-        let pick_spot = "Pick a spot between 1-";
+        let pick_spot = "Pick an open spot between 1-";
         let invalid_selection = "Invalid selection.";
         assert_eq!(pick_spot, PickSpot.to_str());
         assert_eq!(invalid_selection, InvalidSelection.to_str());
