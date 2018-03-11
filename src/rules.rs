@@ -28,27 +28,8 @@ fn each_token_matches(line: &Vec<Token>, token: &Token) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use board::tests::*;
     use token::Token::Empty;
-
-    fn update_cells(indices: Vec<usize>, board: &mut Board) {
-        for i in indices.iter() {
-            match i {
-                i if i % 2 == 0 => board.update(*i, Cross),
-                _ => board.update(*i, Nought),
-            }
-        }
-    }
-
-    fn draw(board: &mut Board) {
-        let length = board.get_length();
-        let cross_spaces = [0, 2, 3, 7, 8];
-        for i in 0..length {
-            match cross_spaces.contains(&i) {
-                true => board.update(i, Cross),
-                false => board.update(i, Nought),
-            }
-        }
-    }
 
     #[test]
     fn it_informs_if_game_not_over() {

@@ -28,17 +28,9 @@ impl<S: Strategy> Player for Computer<S> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use token::Token::{Cross, Nought};
+    use board::tests::*;
+    use token::Token::Cross;
     use strategy::lazy::Lazy;
-
-    fn update_cells(indices: Vec<usize>, board: &mut Board) {
-        for i in indices.iter() {
-            match i {
-                i if i % 2 == 0 => board.update(*i, Cross),
-                _ => board.update(*i, Nought),
-            }
-        }
-    }
 
     #[test]
     fn it_creates_new_player() {

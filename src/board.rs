@@ -104,14 +104,25 @@ impl Board {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
 
-    fn update_cells(indices: Vec<usize>, board: &mut Board) {
+    pub fn update_cells(indices: Vec<usize>, board: &mut Board) {
         for i in indices.iter() {
             match i {
                 i if i % 2 == 0 => board.update(*i, Cross),
                 _ => board.update(*i, Nought),
+            }
+        }
+    }
+
+    pub fn draw(board: &mut Board) {
+        let length = board.get_length();
+        let cross_spaces = [0, 2, 3, 7, 8];
+        for i in 0..length {
+            match cross_spaces.contains(&i) {
+                true => board.update(i, Cross),
+                false => board.update(i, Nought),
             }
         }
     }
