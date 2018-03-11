@@ -32,9 +32,9 @@ impl Board {
     }
 
     pub fn update(&mut self, cell_move: usize, token: Token) {
-        if self.is_empty_cell(cell_move) {
-            self.cells[cell_move] = token;
-        }
+        // if self.is_empty_cell(cell_move) {
+        self.cells[cell_move] = token;
+        // }
     }
 
     pub fn partition(&self) -> CellMatrix {
@@ -125,6 +125,10 @@ pub mod tests {
                 false => board.update(i, Nought),
             }
         }
+    }
+
+    pub fn create_board_with_cells(cells: Vec<Token>) -> Board {
+        Board { size: 3, cells }
     }
 
     #[test]
