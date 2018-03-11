@@ -3,8 +3,9 @@ use board::Board;
 use player::Player;
 use presenter;
 use rules;
-use script::Script::PickSpot;
+use script::Script::{Draw, PickSpot, Wins};
 use token::Token;
+use token::Token::*;
 use view::View;
 
 #[derive(Debug, PartialEq)]
@@ -37,13 +38,26 @@ impl<P: Player, Q: Player> Game<P, Q> {
 
     pub fn play<W: Write>(&mut self, view: &mut View<W>) {
         let board_length = self.board.get_length();
-
-        view.clear();
-        view.print(&presenter::view(&self.board));
+        self.reveal_board(view);
         view.print(&format!("{}{}", PickSpot.to_str(), board_length));
 
         self.take_turn();
         self.update_state();
+    }
+
+    pub fn reveal_winner<W: Write>(&mut self, view: &mut View<W>) {
+        self.reveal_board(view);
+        let winner = rules::get_winner(&self.board);
+
+        match winner {
+            &Empty => view.print(Draw.to_str()),
+            _ => view.print(&format!("{}{}", winner.to_str(), Wins.to_str())),
+        };
+    }
+
+    fn reveal_board<W: Write>(&mut self, view: &mut View<W>) {
+        view.clear();
+        view.print(&presenter::view(&self.board));
     }
 
     fn take_turn(&mut self) {
@@ -83,10 +97,10 @@ mod tests {
     use super::*;
     use super::GameState::{InProgress, Over};
     use board::Board;
+    use board::tests::update_cells;
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;
-    use token::Token::{Cross, Nought};
     use user_input::UserInput;
 
     #[test]
@@ -132,5 +146,30 @@ mod tests {
         }
 
         assert_eq!(Over, game.state);
+    }
+
+    #[test]
+    fn it_reveals_game_winner() {
+        let mut board = Board::new(3);
+        update_cells((0..9).collect(), &mut board);
+        let output = Vec::new();
+        let mut view = View::new(output);
+        let player_one = Computer::new(Cross, Lazy::new());
+        let player_two = Computer::new(Nought, Lazy::new());
+        let mut game = Game::new(board, player_one, player_two);
+        game.reveal_winner(&mut view);
+        let output = view.get_writer();
+        let actual = String::from_utf8(output.clone()).expect("Not UTF-8");
+        let divider = "\n---+---+---\n";
+        let expected_board = vec![
+            " X | O | X ",
+            divider,
+            " O | X | O ",
+            divider,
+            " X | O | X ",
+        ].join("");
+
+        assert!(&actual.contains(&expected_board));
+        assert!(&actual.contains("X wins!"));
     }
 }

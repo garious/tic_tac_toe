@@ -132,7 +132,7 @@ pub mod tests {
         let size = 3;
         let board = Board::new(size);
         assert_eq!(vec![Empty; (size * size)], board.cells);
-        assert_eq!(3, board.size);
+        assert_eq!(size, board.size);
     }
 
     #[test]

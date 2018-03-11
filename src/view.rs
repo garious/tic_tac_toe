@@ -13,11 +13,17 @@ impl<W: Write> View<W> {
         }
     }
 
+    #[allow(dead_code)]
+    pub fn get_writer(&self) -> &W {
+        &self.writer
+    }
+
     pub fn print(&mut self, message: &str) {
         write!(&mut self.writer, "{}\n", message).expect("Unable to write");
     }
 
     pub fn clear(&mut self) {
+        self.writer.flush().expect("Unable to flush");
         let clear = format!("{}", self.clear_sequence);
         self.print(&clear);
     }
@@ -35,6 +41,14 @@ mod tests {
 
         assert_eq!(output, view.writer);
         assert_eq!(clear, view.clear_sequence);
+    }
+
+    #[test]
+    fn it_gets_writer() {
+        let output = Vec::new();
+        let view = View::new(output.clone());
+
+        assert_eq!(output, *view.get_writer());
     }
 
     #[test]
