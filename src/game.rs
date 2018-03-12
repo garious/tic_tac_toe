@@ -15,16 +15,15 @@ pub enum GameState {
     Over,
 }
 
-#[derive(Debug)]
-pub struct Game<P, Q> {
+pub struct Game {
     board: Board,
-    player_one: P,
-    player_two: Q,
+    player_one: Box<Player>,
+    player_two: Box<Player>,
     state: GameState,
 }
 
-impl<P: Player, Q: Player> Game<P, Q> {
-    pub fn new(board: Board, player_one: P, player_two: Q) -> Game<P, Q> {
+impl Game {
+    pub fn new(board: Board, player_one: Box<Player>, player_two: Box<Player>) -> Game {
         Game {
             board,
             player_one,
@@ -109,13 +108,10 @@ mod tests {
     fn it_creates_new_game() {
         let board = Board::new(3);
         let mock_input = MockInput::new("1");
-        let player_one = Human::new(Cross, mock_input.clone());
-        let player_two = Computer::new(Nought, Lazy::new());
+        let player_one = Box::new(Human::new(Cross, mock_input));
+        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         let game = Game::new(board, player_one, player_two);
-
         assert_eq!(Board::new(3), game.board);
-        assert_eq!(Human::new(Cross, mock_input), game.player_one);
-        assert_eq!(Computer::new(Nought, Lazy::new()), game.player_two);
         assert_eq!(InProgress, game.state);
     }
 
@@ -123,8 +119,8 @@ mod tests {
     fn it_gets_game_state() {
         let board = Board::new(3);
         let mock_input = MockInput::new("1");
-        let player_one = Human::new(Cross, mock_input);
-        let player_two = Computer::new(Nought, Lazy::new());
+        let player_one = Box::new(Human::new(Cross, mock_input));
+        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         let game = Game::new(board, player_one, player_two);
 
         assert_eq!(&InProgress, game.get_state());
@@ -134,8 +130,8 @@ mod tests {
     fn it_progresses_game() {
         let board = Board::new(3);
         let mut view = View::new(Vec::new());
-        let player_one = Computer::new(Cross, Lazy::new());
-        let player_two = Computer::new(Nought, Lazy::new());
+        let player_one = Box::new(Computer::new(Cross, Lazy::new()));
+        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         let mut game = Game::new(board, player_one, player_two);
         let number_turns = 9;
 
@@ -154,8 +150,8 @@ mod tests {
         let board = create_board_filling_cells(3, (0..9).collect());
         let output = Vec::new();
         let mut view = View::new(output);
-        let player_one = Computer::new(Cross, Lazy::new());
-        let player_two = Computer::new(Nought, Lazy::new());
+        let player_one = Box::new(Computer::new(Cross, Lazy::new()));
+        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         let mut game = Game::new(board, player_one, player_two);
         game.reveal_winner(&mut view);
         let output = view.get_writer();
