@@ -17,6 +17,7 @@ use player::*;
 use player::computer::Computer;
 use player::human::Human;
 use player::strategy::lazy::Lazy;
+use player::strategy::unbeatable::Unbeatable;
 use script::Script::{HowToPlay, Welcome};
 use token::Token::{Cross, Nought};
 use user_input::UserInput;
@@ -36,7 +37,7 @@ fn main() {
 
     let board = Board::new(3);
     let player_one = Human::new(Cross, user_input);
-    let player_two = Computer::new(Nought, Lazy::new());
+    let player_two = Computer::new(Nought, Unbeatable::new(Nought));
 
     let mut game = Game::new(board, player_one, player_two);
 

@@ -1,4 +1,5 @@
 pub mod lazy;
+pub mod unbeatable;
 
 use board::Board;
 
