@@ -17,14 +17,12 @@ use player::human::Human;
 use player::strategy::unbeatable::Unbeatable;
 use script::Script::{HowToPlay, Welcome};
 use token::Token::{Cross, Nought};
-use ui::user_input::UserInput;
+use ui::input::{Input, UserInput};
 use ui::view::View;
 
 fn main() {
-    let stdio = std::io::stdin();
-    let input = stdio.lock();
     let output = std::io::stdout();
-    let mut user_input = UserInput::new(input);
+    let mut user_input = UserInput::new();
     let mut view = View::new(output);
 
     view.clear();
@@ -33,7 +31,7 @@ fn main() {
     user_input.read_line();
 
     let board = Board::new(3);
-    let player_one = Human::new(Cross, user_input);
+    let player_one = Human::new(Cross, UserInput::new());
     let player_two = Computer::new(Nought, Unbeatable::new(Nought));
 
     let mut game = Game::new(board, player_one, player_two);
