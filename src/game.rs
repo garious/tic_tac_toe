@@ -62,10 +62,11 @@ impl<P: Player, Q: Player> Game<P, Q> {
 
     fn take_turn(&mut self) {
         let (move_result, token) = self.player_options();
+        let cells = self.board.clone();
 
-        let _result = match move_result {
-            Ok(num) => self.board.update(num, token),
-            Err(_) => (),
+        self.board = match move_result {
+            Ok(num) => cells.update(num, token),
+            Err(_) => cells,
         };
     }
 
@@ -97,7 +98,7 @@ mod tests {
     use super::*;
     use super::GameState::{InProgress, Over};
     use board::Board;
-    use board::tests::update_cells;
+    use board::tests::*;
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;
@@ -150,8 +151,7 @@ mod tests {
 
     #[test]
     fn it_reveals_game_winner() {
-        let mut board = Board::new(3);
-        update_cells((0..9).collect(), &mut board);
+        let board = create_board_filling_cells(3, (0..9).collect());
         let output = Vec::new();
         let mut view = View::new(output);
         let player_one = Computer::new(Cross, Lazy::new());

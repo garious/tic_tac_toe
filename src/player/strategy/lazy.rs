@@ -30,10 +30,9 @@ mod tests {
     #[test]
     fn it_picks_random_empty_cell() {
         let strategy = Lazy::new();
-        let mut board = Board::new(3);
         let fill_spots = vec![0, 1, 3, 4];
         let empty_spots = vec![2, 5, 6, 7, 8];
-        update_cells(fill_spots, &mut board);
+        let board = create_board_filling_cells(3, fill_spots);
         let selection = strategy.decide(&board);
 
         assert!(empty_spots.contains(&selection));
