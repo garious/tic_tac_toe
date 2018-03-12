@@ -1,6 +1,7 @@
 extern crate rand;
 
 mod board;
+mod color;
 mod game;
 mod player;
 mod presenter;
