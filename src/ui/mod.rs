@@ -1,4 +1,4 @@
 pub mod color;
 pub mod presenter;
-pub mod user_input;
+pub mod input;
 pub mod view;

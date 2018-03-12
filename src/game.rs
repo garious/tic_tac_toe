@@ -103,19 +103,18 @@ mod tests {
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;
-    use ui::user_input::UserInput;
+    use ui::input::tests::*;
 
     #[test]
     fn it_creates_new_game() {
         let board = Board::new(3);
-        let user_input = UserInput::new(&b"1"[..]);
-        let player_one = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("1");
+        let player_one = Human::new(Cross, mock_input.clone());
         let player_two = Computer::new(Nought, Lazy::new());
         let game = Game::new(board, player_one, player_two);
-        let user_input = UserInput::new(&b"1"[..]);
 
         assert_eq!(Board::new(3), game.board);
-        assert_eq!(Human::new(Cross, user_input), game.player_one);
+        assert_eq!(Human::new(Cross, mock_input), game.player_one);
         assert_eq!(Computer::new(Nought, Lazy::new()), game.player_two);
         assert_eq!(InProgress, game.state);
     }
@@ -123,8 +122,8 @@ mod tests {
     #[test]
     fn it_gets_game_state() {
         let board = Board::new(3);
-        let user_input = UserInput::new(&b"1"[..]);
-        let player_one = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("1");
+        let player_one = Human::new(Cross, mock_input);
         let player_two = Computer::new(Nought, Lazy::new());
         let game = Game::new(board, player_one, player_two);
 

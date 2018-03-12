@@ -1,25 +1,24 @@
-use std::io::BufRead;
 use board::Board;
 use player::Player;
 use script::Script::InvalidSelection;
 use token::Token;
-use ui::user_input::UserInput;
+use ui::input::Input;
 
 const TO_INDEX: usize = 1;
 
 #[derive(Debug, PartialEq)]
-pub struct Human<R> {
+pub struct Human<I> {
     token: Token,
-    input: UserInput<R>,
+    input: I,
 }
 
-impl<R: BufRead> Human<R> {
-    pub fn new(token: Token, input: UserInput<R>) -> Human<R> {
+impl<I: Input> Human<I> {
+    pub fn new(token: Token, input: I) -> Human<I> {
         Human { token, input }
     }
 }
 
-impl<R: BufRead> Player for Human<R> {
+impl<I: Input> Player for Human<I> {
     fn get_token(&self) -> &Token {
         &self.token
     }
@@ -39,25 +38,26 @@ impl<R: BufRead> Player for Human<R> {
 mod tests {
     use super::*;
     use token::Token::Cross;
+    use ui::input::tests::*;
 
     #[test]
     fn it_creates_new_player() {
-        let user_input = UserInput::new(&b"1"[..]);
-        let player = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("1");
+        let player = Human::new(Cross, mock_input);
         assert_eq!(Cross, player.token);
     }
 
     #[test]
     fn it_gets_player_token() {
-        let user_input = UserInput::new(&b"1"[..]);
-        let player = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("1");
+        let player = Human::new(Cross, mock_input);
         assert_eq!(&Cross, player.get_token());
     }
 
     #[test]
     fn it_gets_player_move() {
-        let user_input = UserInput::new(&b"1"[..]);
-        let mut player = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("1");
+        let mut player = Human::new(Cross, mock_input);
         let board = Board::new(3);
         let selection = player.get_move(&board);
 
@@ -66,8 +66,8 @@ mod tests {
 
     #[test]
     fn it_returns_error_for_invalid_input() {
-        let user_input = UserInput::new(&b"y"[..]);
-        let mut player = Human::new(Cross, user_input);
+        let mock_input = MockInput::new("y");
+        let mut player = Human::new(Cross, mock_input);
         let board = Board::new(3);
         let selection = player.get_move(&board);
         let expected = Err(String::from(InvalidSelection.to_str()));
