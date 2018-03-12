@@ -3,7 +3,7 @@ use board::Board;
 use player::Player;
 use script::Script::InvalidSelection;
 use token::Token;
-use user_input::UserInput;
+use ui::user_input::UserInput;
 
 const TO_INDEX: usize = 1;
 

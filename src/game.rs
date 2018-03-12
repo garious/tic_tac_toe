@@ -1,13 +1,13 @@
 use std::io::Write;
 use board::Board;
-use color::Color::Dim;
 use player::Player;
-use presenter;
 use rules;
 use script::Script::{Draw, PickSpot, Wins};
 use token::Token;
 use token::Token::*;
-use view::View;
+use ui::color::Color::Dim;
+use ui::presenter;
+use ui::view::View;
 
 #[derive(Debug, PartialEq)]
 pub enum GameState {
@@ -103,7 +103,7 @@ mod tests {
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;
-    use user_input::UserInput;
+    use ui::user_input::UserInput;
 
     #[test]
     fn it_creates_new_game() {
