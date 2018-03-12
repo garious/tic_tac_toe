@@ -1,5 +1,6 @@
 use std::io::Write;
 use board::Board;
+use color::Color::Dim;
 use player::Player;
 use presenter;
 use rules;
@@ -39,7 +40,7 @@ impl<P: Player, Q: Player> Game<P, Q> {
     pub fn play<W: Write>(&mut self, view: &mut View<W>) {
         let board_length = self.board.get_length();
         self.reveal_board(view);
-        view.print(&format!("{}{}", PickSpot.to_str(), board_length));
+        view.print(&format!("{}{}:", PickSpot.to_str(), board_length));
 
         self.take_turn();
         self.update_state();
@@ -57,7 +58,7 @@ impl<P: Player, Q: Player> Game<P, Q> {
 
     fn reveal_board<W: Write>(&mut self, view: &mut View<W>) {
         view.clear();
-        view.print(&presenter::view(&self.board));
+        view.print(&presenter::view(&self.board, &Dim));
     }
 
     fn take_turn(&mut self) {
