@@ -1,5 +1,5 @@
 use board::Board;
-use color::Color;
+use ui::color::Color;
 use token::Token;
 use token::Token::Empty;
 
@@ -55,7 +55,7 @@ fn pad_sides(token: &str) -> String {
 mod tests {
     use super::*;
     use board::tests::*;
-    use color::Color::Normal;
+    use ui::color::Color::Normal;
 
     #[test]
     fn it_formats_size_3_board_to_string_view() {

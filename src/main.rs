@@ -1,15 +1,12 @@
 extern crate rand;
 
 mod board;
-mod color;
 mod game;
 mod player;
-mod presenter;
 mod rules;
 mod script;
 mod token;
-mod user_input;
-mod view;
+mod ui;
 
 use board::Board;
 use game::Game;
@@ -17,12 +14,11 @@ use game::GameState::InProgress;
 use player::*;
 use player::computer::Computer;
 use player::human::Human;
-use player::strategy::lazy::Lazy;
 use player::strategy::unbeatable::Unbeatable;
 use script::Script::{HowToPlay, Welcome};
 use token::Token::{Cross, Nought};
-use user_input::UserInput;
-use view::View;
+use ui::user_input::UserInput;
+use ui::view::View;
 
 fn main() {
     let stdio = std::io::stdin();

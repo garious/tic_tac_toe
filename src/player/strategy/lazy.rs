@@ -7,6 +7,7 @@ use strategy::Strategy;
 #[derive(Debug, PartialEq)]
 pub struct Lazy;
 
+#[allow(dead_code)]
 impl Lazy {
     pub fn new() -> Lazy {
         Lazy {}
