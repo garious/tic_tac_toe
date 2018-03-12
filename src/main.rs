@@ -34,7 +34,7 @@ fn main() {
     let player_one = Human::new(Cross, UserInput::new());
     let player_two = Computer::new(Nought, Unbeatable::new(Nought));
 
-    let mut game = Game::new(board, player_one, player_two);
+    let mut game = Game::new(board, Box::new(player_one), Box::new(player_two));
 
     while game.get_state() == &InProgress {
         game.play(&mut view);
