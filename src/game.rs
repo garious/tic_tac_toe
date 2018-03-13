@@ -112,6 +112,8 @@ mod tests {
         let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         let game = Game::new(board, player_one, player_two);
         assert_eq!(Board::new(3), game.board);
+        assert_eq!(Cross, *game.player_one.get_token());
+        assert_eq!(Nought, *game.player_two.get_token());
         assert_eq!(InProgress, game.state);
     }
 
