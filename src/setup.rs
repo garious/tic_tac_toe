@@ -18,8 +18,7 @@ pub fn select_mode<I: Input, W: Write>(user_input: &mut I, view: &mut View<W>) -
     view.update_with(ModeSelection.to_str());
     match user_input.read_line().trim().parse() {
         Ok(num) if MODE_OPTIONS.contains(&num) => num,
-        Ok(_) => select_mode(user_input, view),
-        Err(_) => select_mode(user_input, view),
+        Ok(_) | Err(_) => select_mode(user_input, view),
     }
 }
 
@@ -57,10 +56,10 @@ mod tests {
 
     #[test]
     fn it_keeps_prompting_for_valid_mode_option() {
-        let mut mock_input = MockInput::new(vec!["n", "5", "1"]);
+        let mut mock_input = MockInput::new(vec!["n", "5", "0", "-1", "", " ", "1"]);
         let mut view = View::new(Vec::new());
         let selection = select_mode(&mut mock_input, &mut view);
         assert_eq!(1, selection);
-        assert_eq!(3, mock_input.times_called());
+        assert_eq!(7, mock_input.times_called());
     }
 }
