@@ -5,10 +5,10 @@ extern crate ttt_lib;
 mod tests {
     use assert_cli;
     use ttt_lib::board::Board;
-    use ttt_lib::script::Script::*;
     use ttt_lib::token::Token::*;
     use ttt_lib::ui::color::Color::Dim;
     use ttt_lib::ui::presenter;
+    use ttt_lib::ui::script::Script::*;
 
     fn get_board_patterns(indices: Vec<usize>) -> Vec<String> {
         let mut patterns = Vec::new();
