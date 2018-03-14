@@ -23,11 +23,11 @@ impl<I: Input> Player for Human<I> {
         &self.token
     }
 
-    fn get_move(&mut self, _: &Board) -> Result<usize, String> {
+    fn get_move(&mut self, board: &Board) -> Result<usize, String> {
         let selection = self.input.read_line();
         let result: Result<usize, String> = match selection.trim().parse::<usize>() {
-            Ok(num) => Ok(num - TO_INDEX),
-            Err(_) => Err(String::from(InvalidSelection.to_str())),
+            Ok(num) if num > 0 && num <= board.get_length() => Ok(num - TO_INDEX),
+            Ok(_) | Err(_) => Err(String::from(InvalidSelection.to_str())),
         };
 
         result
