@@ -65,8 +65,30 @@ mod tests {
     }
 
     #[test]
-    fn it_returns_error_for_invalid_input() {
+    fn it_returns_error_for_nonnumeric_input() {
         let mock_input = MockInput::new(vec!["y"]);
+        let mut player = Human::new(Cross, mock_input);
+        let board = Board::new(3);
+        let selection = player.get_move(&board);
+        let expected = Err(String::from(InvalidSelection.to_str()));
+
+        assert_eq!(expected, selection);
+    }
+
+    #[test]
+    fn it_returns_error_for_above_range_input() {
+        let mock_input = MockInput::new(vec!["10"]);
+        let mut player = Human::new(Cross, mock_input);
+        let board = Board::new(3);
+        let selection = player.get_move(&board);
+        let expected = Err(String::from(InvalidSelection.to_str()));
+
+        assert_eq!(expected, selection);
+    }
+
+    #[test]
+    fn it_returns_error_for_below_range_input() {
+        let mock_input = MockInput::new(vec!["0"]);
         let mut player = Human::new(Cross, mock_input);
         let board = Board::new(3);
         let selection = player.get_move(&board);
