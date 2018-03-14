@@ -78,7 +78,7 @@ impl Game {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
     use super::GameState::{InProgress, Over};
     use board::Board;
@@ -89,16 +89,16 @@ mod tests {
     use token::Token::{Cross, Nought};
     use ui::input::tests::*;
 
-    fn setup_human_vs_computer() -> Game {
-        let board = Board::new(3);
-        let mock_input = MockInput::new(vec!["1"]);
-        let player_one = Box::new(Human::new(Cross, mock_input));
+    pub fn setup_computer_vs_computer(board: Board) -> Game {
+        let player_one = Box::new(Computer::new(Cross, Lazy::new()));
         let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         Game::new(board, player_one, player_two)
     }
 
-    fn setup_computer_vs_computer(board: Board) -> Game {
-        let player_one = Box::new(Computer::new(Cross, Lazy::new()));
+    fn setup_human_vs_computer() -> Game {
+        let board = Board::new(3);
+        let mock_input = MockInput::new(vec!["1"]);
+        let player_one = Box::new(Human::new(Cross, mock_input));
         let player_two = Box::new(Computer::new(Nought, Lazy::new()));
         Game::new(board, player_one, player_two)
     }
