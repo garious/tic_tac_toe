@@ -42,21 +42,21 @@ mod tests {
 
     #[test]
     fn it_creates_new_player() {
-        let mock_input = MockInput::new("1");
+        let mock_input = MockInput::new(vec!["1"]);
         let player = Human::new(Cross, mock_input);
         assert_eq!(Cross, player.token);
     }
 
     #[test]
     fn it_gets_player_token() {
-        let mock_input = MockInput::new("1");
+        let mock_input = MockInput::new(vec!["1"]);
         let player = Human::new(Cross, mock_input);
         assert_eq!(&Cross, player.get_token());
     }
 
     #[test]
     fn it_gets_player_move() {
-        let mock_input = MockInput::new("1");
+        let mock_input = MockInput::new(vec!["1"]);
         let mut player = Human::new(Cross, mock_input);
         let board = Board::new(3);
         let selection = player.get_move(&board);
@@ -66,7 +66,7 @@ mod tests {
 
     #[test]
     fn it_returns_error_for_invalid_input() {
-        let mock_input = MockInput::new("y");
+        let mock_input = MockInput::new(vec!["y"]);
         let mut player = Human::new(Cross, mock_input);
         let board = Board::new(3);
         let selection = player.get_move(&board);

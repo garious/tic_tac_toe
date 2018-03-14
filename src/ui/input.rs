@@ -1,27 +1,28 @@
-use std::io::{stdin, BufRead, BufReader};
+use std::io::{stdin, BufRead};
 
 pub trait Input {
     fn read_line(&mut self) -> String;
 }
 
-pub struct UserInput {
-    reader: Box<BufRead>,
-}
+pub struct UserInput;
 
 impl UserInput {
     pub fn new() -> UserInput {
-        let reader = BufReader::new(stdin());
-        UserInput {
-            reader: Box::new(reader),
-        }
+        UserInput {}
+    }
+
+    fn read<R: BufRead>(&self, mut reader: R) -> String {
+        let mut input = String::new();
+        reader.read_line(&mut input).expect("Unable to read");
+        input
     }
 }
 
 impl Input for UserInput {
     fn read_line(&mut self) -> String {
-        let mut input = String::new();
-        self.reader.read_line(&mut input).expect("Unable to read");
-        input
+        let stdio = stdin();
+        let input = stdio.lock();
+        self.read(input)
     }
 }
 
@@ -31,28 +32,33 @@ pub mod tests {
 
     #[derive(Debug, PartialEq, Clone)]
     pub struct MockInput<'a> {
-        input: &'a str,
+        input: Vec<&'a str>,
+        called: usize,
     }
 
     impl<'a> Input for MockInput<'a> {
         fn read_line(&mut self) -> String {
-            String::from(self.input)
+            let index = self.called;
+            self.called = self.called + 1;
+            String::from(self.input[index])
         }
     }
 
     impl<'a> MockInput<'a> {
-        pub fn new(input: &'a str) -> MockInput<'a> {
-            MockInput { input }
+        pub fn new(input: Vec<&'a str>) -> MockInput<'a> {
+            MockInput { input, called: 0 }
+        }
+
+        pub fn times_called(self) -> usize {
+            self.called
         }
     }
 
     #[test]
     fn it_gets_user_response() {
         let input = b"1";
-        let mut user_input = UserInput {
-            reader: Box::new(&input[..]),
-        };
+        let user_input = UserInput::new();
 
-        assert_eq!("1", user_input.read_line());
+        assert_eq!("1", user_input.read(&input[..]));
     }
 }

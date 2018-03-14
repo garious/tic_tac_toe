@@ -1,9 +1,8 @@
 use board::Board;
+use player::strategy::Strategy;
 use rules;
 use std::i32::{MAX, MIN};
-use strategy::Strategy;
-use token::Token;
-use token::Token::*;
+use token::Token::{self, Cross, Nought};
 
 #[derive(Debug, PartialEq)]
 pub struct Unbeatable {
@@ -102,6 +101,7 @@ fn get_min_token(token: Token) -> Token {
 mod tests {
     use super::*;
     use board::tests::*;
+    use token::Token::Empty;
 
     #[test]
     fn it_creates_strategy_with_cross_max() {
@@ -129,7 +129,7 @@ mod tests {
         let max_win = vec![
             Cross, Cross, Cross, Nought, Empty, Nought, Empty, Empty, Empty
         ];
-        let board = create_board_with_cells(max_win);
+        let board = create_board_from_cells(max_win);
         let unbeatable = Unbeatable::new(Cross);
         assert_eq!(14, unbeatable.score(4, &board));
     }
@@ -139,7 +139,7 @@ mod tests {
         let max_win = vec![
             Cross, Empty, Cross, Nought, Nought, Nought, Cross, Empty, Empty
         ];
-        let board = create_board_with_cells(max_win);
+        let board = create_board_from_cells(max_win);
         let unbeatable = Unbeatable::new(Cross);
         assert_eq!(-13, unbeatable.score(3, &board));
     }
@@ -159,7 +159,7 @@ mod tests {
         let win = vec![
             Cross, Empty, Nought, Empty, Cross, Nought, Empty, Empty, Cross
         ];
-        let mut board = create_board_with_cells(win);
+        let mut board = create_board_from_cells(win);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (-14, 10),
@@ -172,7 +172,7 @@ mod tests {
         let one_spot = vec![
             Cross, Nought, Cross, Cross, Nought, Cross, Nought, Empty, Nought
         ];
-        let mut board = create_board_with_cells(one_spot);
+        let mut board = create_board_from_cells(one_spot);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (0, 7),
@@ -195,7 +195,7 @@ mod tests {
         let block = vec![
             Nought, Cross, Empty, Empty, Cross, Empty, Empty, Empty, Empty
         ];
-        let mut board = create_board_with_cells(block);
+        let mut board = create_board_from_cells(block);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (0, 7),

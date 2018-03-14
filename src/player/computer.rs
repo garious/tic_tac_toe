@@ -1,6 +1,6 @@
 use board::Board;
 use player::Player;
-use strategy::Strategy;
+use player::strategy::Strategy;
 use token::Token;
 
 #[derive(Debug, PartialEq)]
@@ -30,12 +30,13 @@ mod tests {
     use super::*;
     use board::tests::*;
     use token::Token::Cross;
-    use strategy::lazy::Lazy;
+    use player::strategy::lazy::Lazy;
 
     #[test]
     fn it_creates_new_player() {
         let player = Computer::new(Cross, Lazy::new());
         assert_eq!(Cross, player.token);
+        assert_eq!(Lazy::new(), player.strategy);
     }
 
     #[test]
@@ -49,7 +50,7 @@ mod tests {
         let mut player = Computer::new(Cross, Lazy::new());
         let fill_spots = vec![0, 1, 3, 4];
         let empty_spots = vec![2, 5, 6, 7, 8];
-        let board = create_board_filling_cells(3, fill_spots);
+        let board = create_patterned_board(3, fill_spots);
         let selection = player.get_move(&board).unwrap();
 
         assert!(empty_spots.contains(&selection));
