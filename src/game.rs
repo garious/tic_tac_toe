@@ -1,12 +1,7 @@
 use board::Board;
 use player::Player;
 use rules;
-use script::Script::{Draw, PickSpot, Wins};
-use std::io::Write;
-use token::Token::{self, Empty};
-use ui::color::Color::Dim;
-use ui::presenter;
-use ui::view::View;
+use token::Token;
 
 #[derive(Debug, PartialEq)]
 pub enum GameState {
@@ -31,36 +26,20 @@ impl Game {
         }
     }
 
+    pub fn get_board(&self) -> &Board {
+        &self.board
+    }
+
     pub fn get_state(&self) -> &GameState {
         &self.state
     }
 
-    pub fn next_turn<W: Write>(&mut self, view: &mut View<W>) {
-        let board_length = self.board.get_length();
+    pub fn get_winner(&self) -> &Token {
+        rules::get_winner(&self.board)
+    }
+
+    pub fn next_turn(&mut self) {
         let token = self.current_player_token();
-        self.reveal_board(view);
-        view.print(&format!("{}{}:", PickSpot.to_str(), board_length));
-
-        self.take_turn(token);
-        self.update_state();
-    }
-
-    pub fn reveal_winner<W: Write>(&mut self, view: &mut View<W>) {
-        self.reveal_board(view);
-        let winner = rules::get_winner(&self.board);
-
-        match winner {
-            &Empty => view.print(Draw.to_str()),
-            _ => view.print(&format!("{}{}", winner.to_str(), Wins.to_str())),
-        };
-    }
-
-    fn reveal_board<W: Write>(&mut self, view: &mut View<W>) {
-        view.clear();
-        view.print(&presenter::view(&self.board, &Dim));
-    }
-
-    fn take_turn(&mut self, token: Token) {
         let move_choice = self.current_player_move();
         let cells = self.board.clone();
 
@@ -68,9 +47,11 @@ impl Game {
             Ok(num) => cells.update(num, token),
             Err(_) => cells,
         };
+
+        self.update_state();
     }
 
-    fn current_player_token(&self) -> Token {
+    pub fn current_player_token(&self) -> Token {
         match self.is_odd_turn() {
             true => *self.player_one.get_token(),
             false => *self.player_two.get_token(),
@@ -132,14 +113,27 @@ mod tests {
     }
 
     #[test]
+    fn it_gets_game_board() {
+        let game = setup_human_vs_computer();
+        assert_eq!(&Board::new(3), game.get_board());
+    }
+
+    #[test]
     fn it_gets_game_state() {
         let game = setup_human_vs_computer();
         assert_eq!(&InProgress, game.get_state());
     }
 
     #[test]
+    fn it_gets_game_winner() {
+        let board = create_patterned_board(3, (0..9).collect());
+        let game = setup_computer_vs_computer(board);
+
+        assert_eq!(&Cross, game.get_winner());
+    }
+
+    #[test]
     fn it_progresses_game() {
-        let mut view = View::new(Vec::new());
         let mut game = setup_computer_vs_computer(Board::new(3));
         let number_turns = 9;
 
@@ -147,29 +141,9 @@ mod tests {
 
         for i in 0..number_turns {
             assert_eq!(number_turns - i, game.board.empty_cells().len());
-            game.next_turn(&mut view);
+            game.next_turn();
         }
 
         assert_eq!(Over, game.state);
-    }
-
-    #[test]
-    fn it_reveals_game_winner() {
-        let mut view = View::new(Vec::new());
-        let board = create_patterned_board(3, (0..9).collect());
-        let mut game = setup_computer_vs_computer(board);
-        game.reveal_winner(&mut view);
-        let output = view.get_writer().clone();
-        let actual = String::from_utf8(output).expect("Not UTF-8");
-        let expected_board = vec![
-            " X | O | X ",
-            "\n---+---+---\n",
-            " O | X | O ",
-            "\n---+---+---\n",
-            " X | O | X ",
-        ].join("");
-
-        assert!(&actual.contains(&expected_board));
-        assert!(&actual.contains("X wins!"));
     }
 }

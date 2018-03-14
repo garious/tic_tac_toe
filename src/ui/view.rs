@@ -18,13 +18,13 @@ impl<W: Write> View<W> {
         &self.writer
     }
 
-    pub fn print(&mut self, message: &str) {
+    pub fn append_with(&mut self, message: &str) {
         self.write(message);
     }
 
-    pub fn clear_print(&mut self, message: &str) {
+    pub fn update_with(&mut self, message: &str) {
         self.clear();
-        self.print(message);
+        self.append_with(message);
     }
 
     pub fn clear(&mut self) {
@@ -63,7 +63,7 @@ mod tests {
     #[test]
     fn it_prints_messages() {
         let mut view = View::new(Vec::new());
-        view.print("Tic Tac Toe");
+        view.append_with("Tic Tac Toe");
         let output = String::from_utf8(view.writer).expect("Not UTF-8");
 
         assert_eq!("Tic Tac Toe\n", output);

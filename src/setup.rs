@@ -15,7 +15,7 @@ use ui::input::UserInput;
 const MODE_OPTIONS: [u32; 4] = [1, 2, 3, 4];
 
 pub fn select_mode<I: Input, W: Write>(user_input: &mut I, view: &mut View<W>) -> u32 {
-    view.clear_print(ModeSelection.to_str());
+    view.update_with(ModeSelection.to_str());
     match user_input.read_line().trim().parse() {
         Ok(num) if MODE_OPTIONS.contains(&num) => num,
         Ok(_) => select_mode(user_input, view),
