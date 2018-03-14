@@ -38,7 +38,6 @@ fn each_token_matches(line: &Vec<Token>, token: &Token) -> bool {
 mod tests {
     use super::*;
     use board::tests::*;
-    use token::Token::Empty;
 
     #[test]
     fn it_informs_if_game_not_over() {

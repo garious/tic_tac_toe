@@ -24,4 +24,4 @@ I recommend trying this out with a computer vs. computer game. Then compare spee
 
 ## Running the tests
 
-`cargo test` will run the tests. Please note that unit tests are placed below the code in each `src` file per Rust conventions. Integration tests appear in `tests`. `cargo test` runs both.
+`cargo test` will run the tests. Please note that unit tests are placed below the code in each `src` file per Rust convention. Integration tests for `run` (see `lib.rs`) appear in `tests`. `cargo test` runs both.
