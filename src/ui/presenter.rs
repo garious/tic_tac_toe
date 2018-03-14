@@ -1,7 +1,6 @@
 use board::Board;
 use ui::color::Color;
-use token::Token;
-use token::Token::Empty;
+use token::Token::{self, Empty};
 
 const NEW_LINE: &str = "\n";
 const PLUS: &str = "+";
@@ -67,24 +66,7 @@ mod tests {
             divider,
             " X | 8 | 9 \n",
         ].join("");
-        let board = create_board_filling_cells(3, vec![5, 6]);
-
-        assert_eq!(expected, view(&board, &Normal));
-    }
-
-    #[test]
-    fn it_formats_size_4_board_to_string_view() {
-        let divider = "\n---+---+---+---\n";
-        let expected = vec![
-            " 1 | 2 | 3 | 4 ",
-            divider,
-            " 5 | O | 7 | 8 ",
-            divider,
-            " X | 10 | 11 | 12 ",
-            divider,
-            " 13 | 14 | 15 | 16 \n",
-        ].join("");
-        let board = create_board_filling_cells(4, vec![5, 8]);
+        let board = create_patterned_board(3, vec![5, 6]);
 
         assert_eq!(expected, view(&board, &Normal));
     }

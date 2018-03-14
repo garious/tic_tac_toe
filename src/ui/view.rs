@@ -13,19 +13,28 @@ impl<W: Write> View<W> {
         }
     }
 
-    #[allow(dead_code)]
+    #[allow(unused)]
     pub fn get_writer(&self) -> &W {
         &self.writer
     }
 
     pub fn print(&mut self, message: &str) {
-        write!(&mut self.writer, "{}\n", message).expect("Unable to write");
+        self.write(message);
+    }
+
+    pub fn clear_print(&mut self, message: &str) {
+        self.clear();
+        self.print(message);
     }
 
     pub fn clear(&mut self) {
         self.writer.flush().expect("Unable to flush");
         let clear = format!("{}", self.clear_sequence);
-        self.print(&clear);
+        self.write(&clear);
+    }
+
+    fn write(&mut self, message: &str) {
+        write!(&mut self.writer, "{}\n", message).expect("Unable to write");
     }
 }
 

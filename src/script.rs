@@ -1,10 +1,12 @@
 pub enum Script {
     Welcome,
-    HowToPlay,
+    ModeSelection,
     PickSpot,
     InvalidSelection,
     Draw,
     Wins,
+    PlayAgain,
+    Goodbye,
 }
 
 impl Script {
@@ -13,20 +15,32 @@ impl Script {
             Script::Welcome => {
                 "+--------------------------------+ \
                  \n| ~~~~~ Rusted Tic Tac Toe ~~~~~ | \
-                 \n+--------------------------------+\n"
-            }
-            Script::HowToPlay => {
-                "Tic tac toe is a game of matching.\
+                 \n+--------------------------------+\n\
+                 \nTic tac toe is a game of matching.\
                  \nFill a row, column, or diagonal\
                  \nwith your token and you win. But\
                  \nif you opponent does the same,\
                  \nthey win. So watch out!\
                  \n\nPress [enter] to play."
             }
+            Script::ModeSelection => {
+                "Select a game mode:\n\
+                 \n    [1] human vs. human,\
+                 \n    [2] human vs. computer (easy),\
+                 \n    [3] human vs. computer (impossible),\
+                 \n    [4] computer vs. computer.
+                 \nSelection:"
+            }
             Script::PickSpot => "Pick an open spot between 1-",
             Script::InvalidSelection => "Invalid selection.",
             Script::Draw => "It's a draw.",
             Script::Wins => " wins!!!",
+            Script::PlayAgain => "\nWould you like to play again? [y/n]",
+            Script::Goodbye => {
+                "+---------------------------------+ \
+                 \n| ~~~~~ Goodbye and thanks. ~~~~~ | \
+                 \n+---------------------------------+\n"
+            }
         }
     }
 }

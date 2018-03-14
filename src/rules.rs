@@ -1,6 +1,5 @@
 use board::Board;
-use token::Token;
-use token::Token::*;
+use token::Token::{self, Cross, Empty, Nought};
 
 pub fn is_game_over(board: &Board) -> bool {
     is_won(board) || is_draw(board)
@@ -49,7 +48,7 @@ mod tests {
 
     #[test]
     fn it_informs_if_game_over_for_win() {
-        let board = create_board_filling_cells(3, (0..9).collect());
+        let board = create_patterned_board(3, (0..9).collect());
         assert!(is_game_over(&board));
     }
 
@@ -63,13 +62,13 @@ mod tests {
     fn it_informs_if_game_is_won() {
         let mut board = Board::new(3);
         assert_eq!(false, is_won(&board));
-        board = create_board_filling_cells(3, (0..9).collect());
+        board = create_patterned_board(3, (0..9).collect());
         assert!(is_won(&board));
     }
 
     #[test]
     fn it_specifies_winner() {
-        let board = create_board_filling_cells(3, (0..9).collect());
+        let board = create_patterned_board(3, (0..9).collect());
         assert_eq!(&Cross, get_winner(&board));
     }
 
@@ -91,7 +90,7 @@ mod tests {
     fn it_informs_if_game_is_not_draw() {
         let mut board = Board::new(3);
         assert_eq!(false, is_draw(&board));
-        board = create_board_filling_cells(3, (0..9).collect());
+        board = create_patterned_board(3, (0..9).collect());
         assert_eq!(false, is_draw(&board));
     }
 

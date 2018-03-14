@@ -5,3 +5,12 @@ authors = ["saralein <strujillo@8thlight.com>"]
 
 [dependencies]
 rand = "0.4.2"
+assert_cli = "0.5"
+
+[lib]
+name = "ttt_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ttt_bin"
+path = "src/bin/bin.rs"

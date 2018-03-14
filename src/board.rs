@@ -1,8 +1,6 @@
-use token::Token;
-use token::Token::*;
+use token::Token::{self, Empty};
 
 const MODIFIER: usize = 1;
-
 type CellMatrix = Vec<Vec<Token>>;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -113,8 +111,9 @@ impl Board {
 #[cfg(test)]
 pub mod tests {
     use super::*;
+    use token::Token::{Cross, Nought};
 
-    pub fn create_board_filling_cells(size: usize, indices: Vec<usize>) -> Board {
+    pub fn create_patterned_board(size: usize, indices: Vec<usize>) -> Board {
         let mut cells = vec![Empty; size * size];
         for i in indices.iter() {
             match i {
@@ -135,7 +134,7 @@ pub mod tests {
         }
     }
 
-    pub fn create_board_with_cells(cells: Vec<Token>) -> Board {
+    pub fn create_board_from_cells(cells: Vec<Token>) -> Board {
         Board { size: 3, cells }
     }
 
@@ -170,27 +169,27 @@ pub mod tests {
 
     #[test]
     fn it_sets_board_cell_state() {
-        let board = create_board_filling_cells(3, vec![0, 5]);
+        let board = create_patterned_board(3, vec![0, 5]);
         assert_eq!(Cross, board.cells[0]);
         assert_eq!(Nought, board.cells[5]);
     }
 
     #[test]
     fn it_informs_if_cell_is_empty() {
-        let board = create_board_filling_cells(3, vec![6]);
+        let board = create_patterned_board(3, vec![6]);
         assert_eq!(false, board.is_empty_cell(6));
         assert!(board.is_empty_cell(0));
     }
 
     #[test]
     fn it_gets_indices_of_empty_cells() {
-        let board = create_board_filling_cells(3, vec![0, 2, 5, 7]);
+        let board = create_patterned_board(3, vec![0, 2, 5, 7]);
         assert_eq!(vec![1, 3, 4, 6, 8], board.empty_cells());
     }
 
     #[test]
     fn it_partitions_board_into_rows_diagonals_columns() {
-        let board = create_board_filling_cells(3, vec![0, 2, 3, 4, 7, 8]);
+        let board = create_patterned_board(3, vec![0, 2, 3, 4, 7, 8]);
         let rows = vec![
             vec![Cross, Empty, Cross],
             vec![Nought, Cross, Empty],
