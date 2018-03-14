@@ -1,6 +1,7 @@
 extern crate ttt_lib;
 
 use ttt_lib::run;
+use ttt_lib::ui::color::Color::Dim;
 use ttt_lib::ui::input::UserInput;
 use ttt_lib::ui::view::View;
 
@@ -9,5 +10,5 @@ fn main() {
     let user_input = UserInput::new();
     let mut view = View::new(output);
 
-    run(user_input, &mut view);
+    run(user_input, &mut view, &Dim);
 }
