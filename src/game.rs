@@ -79,10 +79,10 @@ impl Game {
 
 #[cfg(test)]
 pub mod tests {
-    use super::*;
     use super::GameState::{InProgress, Over};
-    use board::Board;
+    use super::*;
     use board::tests::*;
+    use board::Board;
     use player::computer::Computer;
     use player::human::Human;
     use player::strategy::lazy::Lazy;

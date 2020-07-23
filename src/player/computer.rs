@@ -1,6 +1,6 @@
 use board::Board;
-use player::Player;
 use player::strategy::Strategy;
+use player::Player;
 use token::Token;
 
 #[derive(Debug, PartialEq)]
@@ -29,8 +29,8 @@ impl<S: Strategy> Player for Computer<S> {
 mod tests {
     use super::*;
     use board::tests::*;
-    use token::Token::Cross;
     use player::strategy::lazy::Lazy;
+    use token::Token::Cross;
 
     #[test]
     fn it_creates_new_player() {

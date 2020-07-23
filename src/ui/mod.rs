@@ -1,6 +1,6 @@
 pub mod color;
-pub mod presenter;
 pub mod input;
+pub mod presenter;
 pub mod script;
 pub mod view;
 

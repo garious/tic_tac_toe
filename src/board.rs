@@ -130,7 +130,7 @@ pub mod tests {
         Board {
             size,
             cells: vec![
-                Cross, Nought, Cross, Cross, Nought, Nought, Nought, Cross, Cross
+                Cross, Nought, Cross, Cross, Nought, Nought, Nought, Cross, Cross,
             ],
         }
     }

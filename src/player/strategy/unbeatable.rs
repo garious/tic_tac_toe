@@ -52,7 +52,8 @@ impl Unbeatable {
         for i in &board.empty_cells() {
             let token = self.current_token(is_max);
             let mock_board = board.clone().update(*i, token);
-            best_score = self.get_best_option(depth - 1, alpha, beta, &mock_board, !is_max)
+            best_score = self
+                .get_best_option(depth - 1, alpha, beta, &mock_board, !is_max)
                 .0;
 
             if is_max && alpha < best_score {
@@ -123,7 +124,7 @@ mod tests {
     #[test]
     fn it_returns_score_for_max_win() {
         let max_win = vec![
-            Cross, Cross, Cross, Nought, Empty, Nought, Empty, Empty, Empty
+            Cross, Cross, Cross, Nought, Empty, Nought, Empty, Empty, Empty,
         ];
         let board = create_board_from_cells(max_win);
         let unbeatable = Unbeatable::new(Cross);
@@ -133,7 +134,7 @@ mod tests {
     #[test]
     fn it_returns_score_for_min_win() {
         let max_win = vec![
-            Cross, Empty, Cross, Nought, Nought, Nought, Cross, Empty, Empty
+            Cross, Empty, Cross, Nought, Nought, Nought, Cross, Empty, Empty,
         ];
         let board = create_board_from_cells(max_win);
         let unbeatable = Unbeatable::new(Cross);
@@ -153,7 +154,7 @@ mod tests {
     #[test]
     fn it_returns_score_move_for_game_over() {
         let win = vec![
-            Cross, Empty, Nought, Empty, Cross, Nought, Empty, Empty, Cross
+            Cross, Empty, Nought, Empty, Cross, Nought, Empty, Empty, Cross,
         ];
         let board = create_board_from_cells(win);
         let unbeatable = Unbeatable::new(Nought);
@@ -166,7 +167,7 @@ mod tests {
     #[test]
     fn it_picks_last_remaining_spot() {
         let one_spot = vec![
-            Cross, Nought, Cross, Cross, Nought, Cross, Nought, Empty, Nought
+            Cross, Nought, Cross, Cross, Nought, Cross, Nought, Empty, Nought,
         ];
         let board = create_board_from_cells(one_spot);
         let unbeatable = Unbeatable::new(Nought);
@@ -189,7 +190,7 @@ mod tests {
     #[test]
     fn it_blocks_min_player_win() {
         let block = vec![
-            Nought, Cross, Empty, Empty, Cross, Empty, Empty, Empty, Empty
+            Nought, Cross, Empty, Empty, Cross, Empty, Empty, Empty, Empty,
         ];
         let board = create_board_from_cells(block);
         let unbeatable = Unbeatable::new(Nought);

@@ -1,8 +1,8 @@
 extern crate rand;
 
-use rand::Rng;
 use board::Board;
 use player::strategy::Strategy;
+use rand::Rng;
 
 #[derive(Debug, Default, PartialEq)]
 pub struct Lazy;

@@ -1,16 +1,16 @@
 use board::Board;
 use game::Game;
-use player::*;
 use player::computer::Computer;
 use player::human::Human;
 use player::strategy::lazy::Lazy;
 use player::strategy::unbeatable::Unbeatable;
-use token::Token::{Cross, Nought};
+use player::*;
 use script::Script::ModeSelection;
 use std::io::Write;
+use token::Token::{Cross, Nought};
 use ui::input::Input;
-use ui::view::View;
 use ui::input::UserInput;
+use ui::view::View;
 
 const MODE_OPTIONS: [u32; 4] = [1, 2, 3, 4];
 

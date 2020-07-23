@@ -1,6 +1,6 @@
 use board::Board;
-use ui::color::Color;
 use token::Token::{self, Empty};
+use ui::color::Color;
 
 const NEW_LINE: &str = "\n";
 const PLUS: &str = "+";
@@ -65,7 +65,8 @@ mod tests {
             " 4 | 5 | O ",
             divider,
             " X | 8 | 9 \n",
-        ].join("");
+        ]
+        .join("");
         let board = create_patterned_board(3, vec![5, 6]);
 
         assert_eq!(expected, view(&board, &Normal));

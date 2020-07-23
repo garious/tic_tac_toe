@@ -8,13 +8,13 @@ pub mod setup;
 pub mod token;
 pub mod ui;
 
-use game::GameState::InProgress;
 use game::Game;
+use game::GameState::InProgress;
 use std::io::Write;
-use ui::*;
 use ui::color::Color;
 use ui::input::Input;
 use ui::view::View;
+use ui::*;
 
 pub fn run<I: Input, W: Write>(mut user_input: I, mut view: &mut View<W>, color: &Color) -> Game {
     let mut game;
