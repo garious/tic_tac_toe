@@ -7,7 +7,7 @@ use ttt_lib::ui::view::View;
 
 fn main() {
     let output = std::io::stdout();
-    let user_input = UserInput::new();
+    let user_input = UserInput::default();
     let mut view = View::new(output);
 
     run(user_input, &mut view, &Dim);

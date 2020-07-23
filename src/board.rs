@@ -1,7 +1,8 @@
 use token::Token::{self, Empty};
 
 const MODIFIER: usize = 1;
-type CellMatrix = Vec<Vec<Token>>;
+type Row = Vec<Token>;
+type CellMatrix = Vec<Row>;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Board {
@@ -13,7 +14,7 @@ impl Board {
     pub fn new(size: usize) -> Board {
         Board {
             size,
-            cells: vec![Empty; (size * size)],
+            cells: vec![Empty; size * size],
         }
     }
 
@@ -73,7 +74,7 @@ impl Board {
         self.cells.chunks(self.size).map(|x| x.to_vec()).collect()
     }
 
-    fn columns(&self, rows: &CellMatrix) -> CellMatrix {
+    fn columns(&self, rows: &[Row]) -> CellMatrix {
         let mut columns = rows.to_vec();
 
         for i in 0..self.size {
@@ -87,18 +88,18 @@ impl Board {
         columns
     }
 
-    fn diagonals(&self, rows: &CellMatrix) -> CellMatrix {
+    fn diagonals(&self, rows: &[Row]) -> CellMatrix {
         let left_diagonal = self.left_diagonal(rows);
         let right_diagonal = self.right_diagonal(rows);
 
         vec![left_diagonal, right_diagonal]
     }
 
-    fn left_diagonal(&self, rows: &CellMatrix) -> Vec<Token> {
+    fn left_diagonal(&self, rows: &[Row]) -> Vec<Token> {
         rows.iter().enumerate().map(|(i, x)| x[i]).collect()
     }
 
-    fn right_diagonal(&self, rows: &CellMatrix) -> Vec<Token> {
+    fn right_diagonal(&self, rows: &[Row]) -> Vec<Token> {
         let row_end = self.size - MODIFIER;
 
         rows.iter()
@@ -142,7 +143,7 @@ pub mod tests {
     fn it_creates_empty_board() {
         let size = 3;
         let board = Board::new(size);
-        assert_eq!(vec![Empty; (size * size)], board.cells);
+        assert_eq!(vec![Empty; size * size], board.cells);
         assert_eq!(size, board.size);
     }
 

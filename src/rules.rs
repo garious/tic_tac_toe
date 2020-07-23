@@ -7,11 +7,11 @@ pub fn is_game_over(board: &Board) -> bool {
 
 pub fn get_winner(board: &Board) -> &Token {
     if win_for(&Cross, board) {
-        return &Cross;
+        &Cross
     } else if win_for(&Nought, board) {
-        return &Nought;
+        &Nought
     } else {
-        return &Empty;
+        &Empty
     }
 }
 
@@ -30,7 +30,7 @@ fn win_for(token: &Token, board: &Board) -> bool {
         .any(|line| each_token_matches(line, token))
 }
 
-fn each_token_matches(line: &Vec<Token>, token: &Token) -> bool {
+fn each_token_matches(line: &[Token], token: &Token) -> bool {
     line.iter().all(|cell| cell == token)
 }
 

@@ -11,13 +11,13 @@ pub enum GameState {
 
 pub struct Game {
     board: Board,
-    player_one: Box<Player>,
-    player_two: Box<Player>,
+    player_one: Box<dyn Player>,
+    player_two: Box<dyn Player>,
     state: GameState,
 }
 
 impl Game {
-    pub fn new(board: Board, player_one: Box<Player>, player_two: Box<Player>) -> Game {
+    pub fn new(board: Board, player_one: Box<dyn Player>, player_two: Box<dyn Player>) -> Game {
         Game {
             board,
             player_one,
@@ -90,8 +90,8 @@ pub mod tests {
     use ui::input::tests::*;
 
     pub fn setup_computer_vs_computer(board: Board) -> Game {
-        let player_one = Box::new(Computer::new(Cross, Lazy::new()));
-        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
+        let player_one = Box::new(Computer::new(Cross, Lazy::default()));
+        let player_two = Box::new(Computer::new(Nought, Lazy::default()));
         Game::new(board, player_one, player_two)
     }
 
@@ -99,7 +99,7 @@ pub mod tests {
         let board = Board::new(3);
         let mock_input = MockInput::new(vec!["1"]);
         let player_one = Box::new(Human::new(Cross, mock_input));
-        let player_two = Box::new(Computer::new(Nought, Lazy::new()));
+        let player_two = Box::new(Computer::new(Nought, Lazy::default()));
         Game::new(board, player_one, player_two)
     }
 

@@ -40,7 +40,7 @@ pub fn show_winner<W: Write>(game: &mut Game, view: &mut View<W>, color: &Color)
     view.update_with(&presenter::view(&board, color));
 
     match winner {
-        &Empty => view.append_with(Draw.to_str()),
+        Empty => view.append_with(Draw.to_str()),
         _ => view.append_with(&format!("{}{}", winner.to_str(), Wins.to_str())),
     };
 }

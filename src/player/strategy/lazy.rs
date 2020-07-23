@@ -4,14 +4,8 @@ use rand::Rng;
 use board::Board;
 use player::strategy::Strategy;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Default, PartialEq)]
 pub struct Lazy;
-
-impl Lazy {
-    pub fn new() -> Lazy {
-        Lazy {}
-    }
-}
 
 impl Strategy for Lazy {
     fn decide(&self, board: &Board) -> usize {
@@ -29,7 +23,7 @@ mod tests {
 
     #[test]
     fn it_picks_random_empty_cell() {
-        let strategy = Lazy::new();
+        let strategy = Lazy::default();
         let fill_spots = vec![0, 1, 3, 4];
         let empty_spots = vec![2, 5, 6, 7, 8];
         let board = create_patterned_board(3, fill_spots);

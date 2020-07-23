@@ -29,12 +29,12 @@ impl<W: Write> View<W> {
 
     pub fn clear(&mut self) {
         self.writer.flush().expect("Unable to flush");
-        let clear = format!("{}", self.clear_sequence);
+        let clear = self.clear_sequence.to_string();
         self.write(&clear);
     }
 
     fn write(&mut self, message: &str) {
-        write!(&mut self.writer, "{}\n", message).expect("Unable to write");
+        writeln!(&mut self.writer, "{}", message).expect("Unable to write");
     }
 }
 
@@ -74,7 +74,7 @@ mod tests {
         let clear_sequence = String::from("clear");
         let mut view = View {
             writer: Vec::new(),
-            clear_sequence: clear_sequence,
+            clear_sequence,
         };
 
         view.clear();

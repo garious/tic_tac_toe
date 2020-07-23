@@ -23,7 +23,7 @@ pub fn view(board: &Board, color: &Color) -> String {
 
 fn determine_token(index: usize, cell: &Token, color: &Color) -> String {
     match cell {
-        &Empty => color.fill(&format!("{}", index + OFFSET)),
+        Empty => color.fill(&format!("{}", index + OFFSET)),
         _ => String::from(cell.to_str()),
     }
 }

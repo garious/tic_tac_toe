@@ -55,18 +55,14 @@ impl Unbeatable {
             best_score = self.get_best_option(depth - 1, alpha, beta, &mock_board, !is_max)
                 .0;
 
-            if is_max {
-                if alpha < best_score {
-                    alpha = best_score;
-                    best_move = *i;
-                }
+            if is_max && alpha < best_score {
+                alpha = best_score;
+                best_move = *i;
             }
 
-            if !is_max {
-                if beta > best_score {
-                    beta = best_score;
-                    best_move = *i;
-                }
+            if !is_max && beta > best_score {
+                beta = best_score;
+                best_move = *i;
             }
 
             if alpha >= beta {
@@ -146,11 +142,11 @@ mod tests {
 
     #[test]
     fn it_returns_base_score_move_when_draw() {
-        let mut board = create_tied_board(3);
+        let board = create_tied_board(3);
         let unbeatable = Unbeatable::new(Cross);
         assert_eq!(
             (0, 10),
-            unbeatable.get_best_option(0, MIN, MAX, &mut board, true)
+            unbeatable.get_best_option(0, MIN, MAX, &board, true)
         );
     }
 
@@ -159,11 +155,11 @@ mod tests {
         let win = vec![
             Cross, Empty, Nought, Empty, Cross, Nought, Empty, Empty, Cross
         ];
-        let mut board = create_board_from_cells(win);
+        let board = create_board_from_cells(win);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (-14, 10),
-            unbeatable.get_best_option(4, MIN, MAX, &mut board, true)
+            unbeatable.get_best_option(4, MIN, MAX, &board, true)
         );
     }
 
@@ -172,21 +168,21 @@ mod tests {
         let one_spot = vec![
             Cross, Nought, Cross, Cross, Nought, Cross, Nought, Empty, Nought
         ];
-        let mut board = create_board_from_cells(one_spot);
+        let board = create_board_from_cells(one_spot);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (0, 7),
-            unbeatable.get_best_option(1, MIN, MAX, &mut board, false)
+            unbeatable.get_best_option(1, MIN, MAX, &board, false)
         );
     }
 
     #[test]
     fn it_picks_corner_if_open() {
-        let mut board = Board::new(3);
+        let board = Board::new(3);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (0, 0),
-            unbeatable.get_best_option(1, MIN, MAX, &mut board, true)
+            unbeatable.get_best_option(1, MIN, MAX, &board, true)
         );
     }
 
@@ -195,11 +191,11 @@ mod tests {
         let block = vec![
             Nought, Cross, Empty, Empty, Cross, Empty, Empty, Empty, Empty
         ];
-        let mut board = create_board_from_cells(block);
+        let board = create_board_from_cells(block);
         let unbeatable = Unbeatable::new(Nought);
         assert_eq!(
             (0, 7),
-            unbeatable.get_best_option(6, MIN, MAX, &mut board, true)
+            unbeatable.get_best_option(6, MIN, MAX, &board, true)
         );
     }
 }

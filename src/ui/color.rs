@@ -8,7 +8,7 @@ impl Color {
     pub fn fill(&self, text: &str) -> String {
         match *self {
             Color::Dim => format!("\x1B[2m{}\x1B[0m", text),
-            Color::Normal => format!("{}", text),
+            Color::Normal => text.to_string(),
         }
     }
 }

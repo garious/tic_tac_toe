@@ -28,18 +28,18 @@ pub fn setup_game(mode_selection: u32) -> Game {
     Game::new(board, player_one, player_two)
 }
 
-fn setup_players(mode_selection: u32) -> (Box<Player>, Box<Player>) {
+fn setup_players(mode_selection: u32) -> (Box<dyn Player>, Box<dyn Player>) {
     match mode_selection {
         1 => (
-            Box::new(Human::new(Cross, UserInput::new())),
-            Box::new(Human::new(Nought, UserInput::new())),
+            Box::new(Human::new(Cross, UserInput::default())),
+            Box::new(Human::new(Nought, UserInput::default())),
         ),
         2 => (
-            Box::new(Human::new(Cross, UserInput::new())),
-            Box::new(Computer::new(Nought, Lazy::new())),
+            Box::new(Human::new(Cross, UserInput::default())),
+            Box::new(Computer::new(Nought, Lazy::default())),
         ),
         3 => (
-            Box::new(Human::new(Cross, UserInput::new())),
+            Box::new(Human::new(Cross, UserInput::default())),
             Box::new(Computer::new(Nought, Unbeatable::new(Nought))),
         ),
         _ => (
